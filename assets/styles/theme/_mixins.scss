@@ -1,0 +1,22 @@
+@mixin font-mixin($font-size, $line-height: normal, $letter-spacing: normal, $font-weigth: 400) {
+  font-size: $font-size * 1px;
+
+  @if $line-height==normal {
+    line-height: normal;
+  } @else {
+    line-height: $line-height;
+  }
+
+  @if $letter-spacing==normal {
+    letter-spacing: normal;
+  } @else {
+    letter-spacing: #{$letter-spacing}px;
+  }
+
+  @if $font-weigth == 400{
+    font-weight: 400;
+  }else{
+    font-weight: #{$font-weigth};
+  }
+  font-family: $primary-font;
+}

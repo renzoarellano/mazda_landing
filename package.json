@@ -15,7 +15,11 @@
     "bootstrap": "^4.6.0",
     "bootstrap-vue": "^2.21.2",
     "core-js": "^3.8.3",
-    "nuxt": "^2.14.12"
+    "nuxt": "^2.14.12",
+    "swiper": "^5.3.7",
+    "vue-awesome-swiper": "^4.1.1",
+    "sass": "1.30.0",
+    "sass-loader": "^10.1.0"
   },
   "devDependencies": {
     "@nuxtjs/eslint-config": "^5.0.0",
