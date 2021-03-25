@@ -12,3 +12,64 @@
     padding: 50px 18px;
   }
 }
+
+
+//Title
+.titleCatalog {
+  h1 {
+    @include font-mixin(24);
+    color: white;
+  }
+  p {
+    @include font-mixin(16);
+    color: white;
+  }
+}
+@media (max-width: 767px) {
+  .titleCatalog {
+    margin-bottom: 15px;
+    h1 {
+      @include font-mixin(18);
+    }
+    p {
+      @include font-mixin(12);
+      color: white;
+    }
+  }
+}
+
+// Card Componente Catalogo
+.cardAutoCatalog{
+  margin-bottom: 60px;
+  img{
+    width: 100%;
+    position: relative;
+    z-index: -1;
+    min-height: 200px;
+  }
+  &__textos{
+    position: absolute;
+    min-width: 90%;
+    bottom: 0;
+    padding: 0px 15px 25px 15px;
+    h3{
+      text-transform: uppercase;
+      @include font-mixin(14);
+      margin-bottom:5px
+    }
+    &__bottom{
+      display: flex;
+      justify-content: space-between;
+      p{
+        @include font-mixin(14);
+      }
+    }
+
+  }
+}
+@media (max-width: 767px){
+  .cardAutoCatalog{
+    max-width: 320px !important;
+    margin: 0px auto 30px auto ;
+  }
+}

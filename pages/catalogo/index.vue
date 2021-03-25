@@ -17,8 +17,8 @@ export default {
     CatalogoComponent,
   },
   async asyncData({ store, route }) {
-    await store.dispatch('cars/gettingCars')
-    await store.dispatch('cars/gettingModelsFromAPI')
+    await store.dispatch('cars/gettingSlugData')
+    await store.dispatch('cars/gettingCarItemsData')
   },
   data() {
     return {}

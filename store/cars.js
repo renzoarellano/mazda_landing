@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 export const SET_CARS = 'SET_CARS'
 export const TOTAL_CARS = 'TOTAL_CARS'
 export const SET_MODELS = 'SET_MODELS'
@@ -6,6 +7,7 @@ export const SET_CATEGORIES = 'SET_CATEGORIES'
 export const SET_PAGINATION_SEARCH = 'SET_PAGINATION_SEARCH'
 export const ADD_BODY_SEARCH_DATA = 'ADD_BODY_SEARCH_DATA'
 export const SET_IMAGESAPI = 'SET_IMAGESAPI'
+export const SET_SLUGS_API = 'SET_SLUGS_API'
 export const state = () => ({
   cars: [],
   totalCars: 0,
@@ -14,6 +16,7 @@ export const state = () => ({
   years: [],
   paginationSearch: {},
   imagesAPI: [],
+  slugsAPI: [],
   bodySearch: {
     filters: {
       priceRanges: [0, 0],
@@ -80,39 +83,52 @@ export const actions = {
   addBodySearchData({ commit }, data) {
     commit(ADD_BODY_SEARCH_DATA, data)
   },
-  async gettingCars({ commit, state }) {
+  async gettingSlugData({ commit }) {
     try {
-      const data = await this.$axios.$get(
+      const dataSlugs = await this.$axios.$get(
         'https://cotizadorderco.com/mazdaCampaign'
       )
-      commit(SET_IMAGESAPI, data)
+      commit(SET_SLUGS_API, dataSlugs)
     } catch (error) {
       console.log(error)
     }
   },
-  async gettingModelsFromAPI({ commit, state }) {
+  async gettingCarItemsData({ commit, state }) {
     try {
-      const modelsData = await this.$axios.$get('api/v6/models')
-      console.log(
-        '🚀 ~ file: cars.js ~ line 96 ~ gettingModelsFromAPI ~ modelsData',
-        modelsData
+      const modelsToBody = []
+
+      state.slugsAPI.forEach((dato) => modelsToBody.push(dato.modelo))
+      const objectFilter = {
+        filters: {
+          brands: ['mazda'],
+          carClasses: [],
+          models: modelsToBody,
+        },
+        order: 'asc',
+      }
+      const { data } = await this.$axios.$post(
+        'api/v6/models/search?page=1',
+        objectFilter
       )
-      commit(SET_MODELS, modelsData)
-      commit(SET_CARS, modelsData)
+      data.forEach((model) => {
+        const filterModel = state.slugsAPI.filter(
+          (slugs) => slugs.modelo === model.slug
+        )
+        if (filterModel) {
+          model.newImageCatalogo = filterModel[0].img
+        }
+      })
+      commit(SET_MODELS, data)
+      commit(SET_CARS, data)
     } catch (error) {
-      console.log(error)
+      console.log(' error', error)
     }
   },
   filterCars({ commit, state }, data) {
-    console.log('🚀 ~ file: cars.js ~ line 107 ~ filterCars ~ data', data)
     let carFilter = state.models
     if (data) {
       carFilter = state.models.filter((car) => car.slug === data)
     }
-    console.log(
-      '🚀 ~ file: cars.js ~ line 109 ~ filterCars ~ carFilter',
-      carFilter
-    )
     commit(SET_CARS, carFilter)
   },
 }
@@ -120,6 +136,9 @@ export const actions = {
 export const mutations = {
   [SET_CARS](state, items) {
     state.cars = items
+  },
+  [SET_SLUGS_API](state, items) {
+    state.slugsAPI = items
   },
   [TOTAL_CARS](state, items) {
     state.totalItems = items
