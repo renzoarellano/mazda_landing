@@ -6,6 +6,9 @@
       <div class="col-7 col-md-6 col-lg-8">
         <TitleCatalog />
       </div>
+      <div class="col-5 d-block d-sm-none">
+        <FilterMobileComponent v-if="models" :models="models" />
+      </div>
       <div class="col-12 col-md-6 col-lg-4">
         <CustomSelect
           v-model="selectedOrder"
@@ -17,9 +20,10 @@
     <b-row>
       <div class="col-12 espaceRowCars">
         <b-row>
-          <div
+          <a
             v-for="(model, index) in carItems"
             :key="`${model.slug} - ${index}`"
+            :href="'/catalogo/detalle/' + model.slug"
             class="col-12 col-md-6 col-lg-4 cardAutoCatalog"
           >
             <img
@@ -33,7 +37,7 @@
                 <p>S/ {{ model.defaultVersion.prices[0].convertedValue }}</p>
               </div>
             </div>
-          </div>
+          </a>
         </b-row>
       </div>
     </b-row>
@@ -41,12 +45,14 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
+import { mapGetters, mapActions } from 'vuex'
 import TitleCatalog from '~/components/catalogo/Title'
+import FilterMobileComponent from '~/components/catalogo/FilterMobile'
 import CustomSelect from '~/components/common/Select'
+
 export default {
   name: 'CatalogoComponent',
-  components: { TitleCatalog, CustomSelect },
+  components: { TitleCatalog, CustomSelect, FilterMobileComponent },
   props: {
     items: {
       type: Array,
@@ -77,6 +83,17 @@ export default {
   computed: {
     ...mapGetters({
       carItems: 'cars/cars',
+      models: 'cars/models',
+    }),
+  },
+  watch: {
+    selectedOrder(value) {
+      this.order(value)
+    },
+  },
+  methods: {
+    ...mapActions({
+      order: 'cars/orderByCars',
     }),
   },
 }
@@ -89,6 +106,14 @@ export default {
   }
   .espaceRowCars {
     padding-top: 0px;
+  }
+  .filtrosMobileFixed {
+    position: fixed;
+    width: 100%;
+    top: 0;
+    background: gray;
+    padding: 15px 0px;
+    z-index: 98;
   }
 }
 @media (min-width: 768px) {

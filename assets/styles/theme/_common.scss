@@ -5,6 +5,10 @@
   margin: 0;
   padding: 0;
 }
+.np{
+  padding-left: 0px;
+  padding-right: 0px;
+}
 
 html {
   height: 100%;
@@ -91,15 +95,15 @@ body {
       @include font-mixin(16);
     }
   }
-  @media (min-width: 768px) {
+  @media (min-width: 320px) {
     .items{
       margin: 0px 15px;
     }
   }
+
   @media (min-width: 992px){
     .items{
       max-width: 100%;
-      margin: 0px 15px;
     }
   }
 

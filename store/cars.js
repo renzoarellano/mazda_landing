@@ -19,10 +19,8 @@ export const state = () => ({
   slugsAPI: [],
   bodySearch: {
     filters: {
-      priceRanges: [0, 0],
       brands: ['mazda'],
       carClasses: [], // SUV, SEDÁN, HATCHBACK
-      carClassesDerco: [],
       models: [],
     },
     order: 'asc',
@@ -98,38 +96,130 @@ export const actions = {
       const modelsToBody = []
 
       state.slugsAPI.forEach((dato) => modelsToBody.push(dato.modelo))
-      const objectFilter = {
-        filters: {
-          brands: ['mazda'],
-          carClasses: [],
-          models: modelsToBody,
-        },
-        order: 'asc',
-      }
+      const objectFilter = state.bodySearch
+      objectFilter.filters.models = modelsToBody
+
       const { data } = await this.$axios.$post(
         'api/v6/models/search?page=1',
         objectFilter
       )
+      const newArrayData = []
       data.forEach((model) => {
-        const filterModel = state.slugsAPI.filter(
-          (slugs) => slugs.modelo === model.slug
-        )
-        if (filterModel) {
-          model.newImageCatalogo = filterModel[0].img
-        }
+        state.slugsAPI.forEach((slug) => {
+          if (slug.modelo === model.slug) {
+            model.newImageCatalogo = slug.img
+            newArrayData.push(model)
+          }
+        })
       })
-      commit(SET_MODELS, data)
-      commit(SET_CARS, data)
+      commit(SET_MODELS, newArrayData)
+      commit(SET_CARS, newArrayData)
     } catch (error) {
       console.log(' error', error)
     }
   },
-  filterCars({ commit, state }, data) {
-    let carFilter = state.models
-    if (data) {
-      carFilter = state.models.filter((car) => car.slug === data)
+  async filterCars({ commit, state }, filterView) {
+    console.log(
+      '🚀 ~ file: cars.js ~ line 122 ~ filterCars ~ filterView',
+      filterView
+    )
+    const models = []
+    const category = []
+    let newArrayData = [] // array Final de resultados
+    if (filterView.model) {
+      models.push(filterView.model)
     }
-    commit(SET_CARS, carFilter)
+    if (filterView.category) {
+      category.push(filterView.category)
+    }
+    const objectFilter = state.bodySearch
+    objectFilter.filters.models = models
+    objectFilter.filters.carClasses = category
+
+    if (filterView) {
+      const { data } = await this.$axios.$post(
+        'api/v6/models/search?page=1',
+        objectFilter
+      )
+      console.log('🚀 ~ file: cars.js ~ line 147 ~ filterCars ~ data', data)
+
+      data.forEach((model) => {
+        state.slugsAPI.forEach((slug) => {
+          if (slug.modelo === model.slug) {
+            model.newImageCatalogo = slug.img
+            newArrayData.push(model)
+          }
+        })
+      })
+    }
+    const filterPriceArray = []
+    if (filterView.price) {
+      const minPrice = filterView.price[0]
+      const maxPrice = filterView.price[1]
+      newArrayData.forEach((car) => {
+        car.defaultVersion.prices.forEach((price) => {
+          if (price.value >= minPrice && price.value <= maxPrice) {
+            filterPriceArray.push(car)
+          }
+        })
+      })
+      newArrayData = filterPriceArray
+    }
+    const filterYearArray = []
+    if (filterView.year) {
+      newArrayData.forEach((car) => {
+        let pushToArray = false
+        car.defaultVersion.prices.forEach((price) => {
+          if (price.name === filterView.year.toString()) {
+            pushToArray = true
+          }
+          if (pushToArray) {
+            filterYearArray.push(car)
+          }
+        })
+      })
+      newArrayData = filterYearArray
+    }
+    commit(SET_CARS, newArrayData)
+  },
+  orderByCars({ commit, state }, order) {
+    const nowCars = state.cars
+
+    if (order) {
+      if (order === 'DESC') {
+        nowCars.sort(function (a, b) {
+          if (
+            a.defaultVersion.prices[0].value < b.defaultVersion.prices[0].value
+          ) {
+            return 1
+          }
+          if (
+            a.defaultVersion.prices[0].value > b.defaultVersion.prices[0].value
+          ) {
+            return -1
+          }
+          // a must be equal to b
+          return 0
+        })
+        commit(SET_CARS, nowCars)
+      } else if (order === 'ASC') {
+        nowCars.sort(function (a, b) {
+          if (
+            a.defaultVersion.prices[0].value > b.defaultVersion.prices[0].value
+          ) {
+            return 1
+          }
+          if (
+            a.defaultVersion.prices[0].value < b.defaultVersion.prices[0].value
+          ) {
+            return -1
+          }
+          // a must be equal to b
+          return 0
+        })
+        commit(SET_CARS, nowCars)
+      }
+    }
   },
 }
 

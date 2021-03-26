@@ -89,6 +89,7 @@ export default {
         category: this.selectedRadioButtonType,
       }
       this.filtrar(filterOptions)
+      this.scrollTop()
     },
     updateModelsData(modelsMazda) {
       let newOptions = [
@@ -108,6 +109,14 @@ export default {
 
       return newOptions
     },
+    scrollTop() {
+      this.intervalId = setInterval(() => {
+        if (window.pageYOffset === 0) {
+          clearInterval(this.intervalId)
+        }
+        window.scroll(0, window.pageYOffset - 50)
+      }, 20)
+    },
     ...mapActions({
       filtrar: 'cars/filterCars',
     }),
@@ -115,7 +124,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 .filterPad {
   padding-left: 0px;
   position: fixed;

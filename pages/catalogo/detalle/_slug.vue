@@ -1,9 +1,15 @@
 <template>
-  <div>Detalle</div>
+  <div>{{ slug }}</div>
 </template>
 
 <script>
-export default {}
+export default {
+  data() {
+    return {
+      slug: this.$route.params.slug,
+    }
+  },
+}
 </script>
 
 <style scoped></style>
