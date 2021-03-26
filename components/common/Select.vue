@@ -1,9 +1,18 @@
 <template>
-  <div class="custom__selectFilter" :tabindex="tabindex" @blur="open = false">
+  <div
+    class="custom__selectFilter"
+    :style="customColor != '' ? `background-color:${customColor}` : ''"
+    :tabindex="tabindex"
+    @blur="open = false"
+  >
     <div class="selectedValue" :class="{ open: open }" @click="open = !open">
       {{ selected }}
     </div>
-    <div class="items" :class="{ selectHide: !open }">
+    <div
+      class="items"
+      :style="customColor != '' ? `background-color:${customColor}` : ''"
+      :class="{ selectHide: !open }"
+    >
       <div
         v-for="(option, index) in options"
         :key="index"
@@ -36,6 +45,11 @@ export default {
       type: Number,
       required: false,
       default: 0,
+    },
+    customColor: {
+      type: String,
+      required: false,
+      default: '',
     },
   },
   data() {

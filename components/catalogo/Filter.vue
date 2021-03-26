@@ -1,9 +1,26 @@
 <template>
-  <div class="col-12 col-md-4 col-lg-3 col-xl-3">
-    <div class="filterContainer">
+  <div class="col-md-4 col-lg-3 col-xl-3 filterPad">
+    <div class="filterContainer col-12">
       <CustomSelect v-model="selectedModel" :options-value="optionsModels" />
       <CustomSelect v-model="selectedPrice" :options-value="optionsPrices" />
-      <button @click="applyFilter()">Aplicar Filtros</button>
+      <RadioButtons
+        v-model="selectedRadioButtonYear"
+        :title="titleRadioButtonsYear"
+        :label-name="labelRadioButtonsYear"
+        :options="optionsRadioButtonsYear"
+        :value="selectedRadioButtonYear"
+        :display-mode="'row'"
+      />
+      <RadioButtons
+        v-model="selectedRadioButtonType"
+        :title="titleRadioButtonsType"
+        :label-name="labelRadioButtonsType"
+        :options="optionsRadioButtonsType"
+        :value="selectedRadioButtonType"
+      />
+      <button class="buttonFilterAction" @click="applyFilter()">
+        Aplicar Filtros
+      </button>
     </div>
   </div>
 </template>
@@ -11,9 +28,10 @@
 <script>
 import { mapActions } from 'vuex'
 import CustomSelect from '~/components/common/Select'
+import RadioButtons from '~/components/common/RadioButtons'
 export default {
   name: 'FilterComponent',
-  components: { CustomSelect },
+  components: { CustomSelect, RadioButtons },
   props: {
     models: {
       type: Array,
@@ -45,11 +63,33 @@ export default {
           text: 'US$ 30,000 - US$ 40,000',
         },
       ],
+      selectedRadioButtonYear: null,
+      titleRadioButtonsYear: 'AÑO',
+      labelRadioButtonsYear: 'RadioButtonsYear',
+      optionsRadioButtonsYear: {
+        2021: 2021,
+        2022: 2022,
+      },
+      selectedRadioButtonType: null,
+      titleRadioButtonsType: 'CATEGORÍA',
+      labelRadioButtonsType: 'RadioButtonsType',
+      optionsRadioButtonsType: {
+        SUV: 'SUV',
+        HATCHBACK: 'Hatchback',
+        SEDÁN: 'Sedán',
+      },
     }
   },
   methods: {
     applyFilter() {
-      this.filtrar(this.selectedModel)
+      const filterOptions = {
+        model: this.selectedModel,
+        price: this.selectedPrice,
+        year: this.selectedRadioButtonYear,
+        category: this.selectedRadioButtonType,
+      }
+      this.filtrar(filterOptions)
+      this.scrollTop()
     },
     updateModelsData(modelsMazda) {
       let newOptions = [
@@ -58,12 +98,24 @@ export default {
           text: 'MODELOS',
         },
       ]
-      newOptions = newOptions.concat(
-        modelsMazda.map(
-          (model) => (model = { ...model, value: model.slug, text: model.name })
+      if (modelsMazda) {
+        newOptions = newOptions.concat(
+          modelsMazda.map(
+            (model) =>
+              (model = { ...model, value: model.slug, text: model.name })
+          )
         )
-      )
+      }
+
       return newOptions
+    },
+    scrollTop() {
+      this.intervalId = setInterval(() => {
+        if (window.pageYOffset === 0) {
+          clearInterval(this.intervalId)
+        }
+        window.scroll(0, window.pageYOffset - 50)
+      }, 20)
     },
     ...mapActions({
       filtrar: 'cars/filterCars',
@@ -72,4 +124,14 @@ export default {
 }
 </script>
 
-<style></style>
+<style scoped>
+.filterPad {
+  padding-left: 0px;
+  position: fixed;
+}
+@media (max-width: 767px) {
+  .filterPad {
+    display: none;
+  }
+}
+</style>
