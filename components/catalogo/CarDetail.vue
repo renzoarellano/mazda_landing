@@ -131,7 +131,7 @@
 
 <script>
 export default {
-  name: 'DetailCarComponent',
+  name: 'CarDetailComponent',
   components: {},
   props: {},
   data() {

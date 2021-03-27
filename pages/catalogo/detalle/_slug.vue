@@ -11,11 +11,11 @@
 <script>
 import { mapGetters } from 'vuex'
 import FilterDetailComponent from '~/components/catalogo/FilterDetail'
-import DetailCarComponent from '~/components/catalogo/DetailCar'
+import CarDetailComponent from '~/components/catalogo/CarDetail'
 export default {
   components: {
     FilterDetailComponent,
-    DetailCarComponent,
+    CarDetailComponent,
   },
   data() {
     return {
