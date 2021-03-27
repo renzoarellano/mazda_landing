@@ -2,8 +2,8 @@
   <b-container fluid class="">
     <b-row>
       <FilterDetailComponent />
-      <DetailCarComponent  />
-      <div>{{ slug }}</div>
+      <CarDetailComponent  />
+      <!-- <div>{{ slug }}</div> -->
     </b-row>
   </b-container>
 </template>
