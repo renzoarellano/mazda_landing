@@ -2,7 +2,7 @@
   <b-container fluid class="">
     <b-row>
       <FilterDetailComponent />
-      <CarDetailComponent  />
+      <CarDetailComponent />
       <!-- <div>{{ slug }}</div> -->
     </b-row>
   </b-container>
@@ -17,10 +17,19 @@ export default {
     FilterDetailComponent,
     CarDetailComponent,
   },
+  async asyncData({ store, route }) {
+    await store.dispatch('detailcar/gettingImagesDetail', route.params.slug)
+  },
   data() {
     return {
       slug: this.$route.params.slug,
     }
+  },
+  computed: {
+    ...mapGetters({
+      modelData: 'detailcar/modelData',
+      imagesDetail: 'detailcar/imagesDetail',
+    }),
   },
 }
 </script>

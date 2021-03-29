@@ -1,5 +1,5 @@
 <template>
-  <section class="content col-12 col-md-8 col-lg-9">
+  <section class="content col-12 col-md-8 offset-md-4 col-lg-9 offset-lg-3">
     <div class="model-car only-mobile">
       <p>Modelo</p>
       <h5>all-new mazda3 sport</h5>
@@ -41,13 +41,13 @@
     </div>
     <div id="credit-calculate-mob" class="credit-calculate only-mobile">
       <div class="btn-calculate">
-        Calcular credito 
+        Calcular credito
         <img id="img-plus" src="../../assets/icons/plus.svg" alt="" />
-        <img 
-          id="img-minus" 
-          class="hide" 
-          src="../../assets/icons/remove.svg" 
-          alt="" 
+        <img
+          id="img-minus"
+          class="hide"
+          src="../../assets/icons/remove.svg"
+          alt=""
         />
       </div>
       <div id="options-calculate" class="hide">
@@ -77,16 +77,16 @@
             <input type="text" value="0" maxlength="2" readonly />
             <div>
               <span>
-                <svg 
-                  version="1.1" 
-                  id="Capa_1" 
-                  xmlns="http://www.w3.org/2000/svg" 
-                  xmlns:xlink="http://www.w3.org/1999/xlink" 
-                  x="0px" 
+                <svg
+                  id="Capa_1"
+                  version="1.1"
+                  xmlns="http://www.w3.org/2000/svg"
+                  xmlns:xlink="http://www.w3.org/1999/xlink"
+                  x="0px"
                   y="0px"
-                  width="404.308px" 
-                  height="404.309px" 
-                  viewBox="0 0 404.308 404.309" 
+                  width="404.308px"
+                  height="404.309px"
+                  viewBox="0 0 404.308 404.309"
                   xml:space="preserve"
                 >
                   <g>
@@ -95,16 +95,16 @@
                 </svg>
               </span>
               <span>
-                <svg 
-                  version="1.1" 
-                  id="Capa_1" 
-                  xmlns="http://www.w3.org/2000/svg" 
-                  xmlns:xlink="http://www.w3.org/1999/xlink" 
-                  x="0px" 
+                <svg
+                  id="Capa_1"
+                  version="1.1"
+                  xmlns="http://www.w3.org/2000/svg"
+                  xmlns:xlink="http://www.w3.org/1999/xlink"
+                  x="0px"
                   y="0px"
-                  width="404.308px" 
-                  height="404.309px" 
-                  viewBox="0 0 404.308 404.309" 
+                  width="404.308px"
+                  height="404.309px"
+                  viewBox="0 0 404.308 404.309"
                   xml:space="preserve"
                 >
                   <g>
@@ -150,7 +150,7 @@ export default {
   margin-bottom: 32px;
   position: relative;
 }
-.model-car p, 
+.model-car p,
 .content .prices p {
   color: #b4b4b4;
   font-size: 14px;
@@ -237,20 +237,36 @@ export default {
   margin-bottom: 10px;
 }
 .content .credit-calculate #options-calculate .option-range input[type='range'],
-.content .credit-calculate #options-calculate .option-range input[type='range']::-webkit-slider-runnable-track,
-.content .credit-calculate #options-calculate .option-range input[type='range']::-webkit-slider-thumb {
+.content
+  .credit-calculate
+  #options-calculate
+  .option-range
+  input[type='range']::-webkit-slider-runnable-track,
+.content
+  .credit-calculate
+  #options-calculate
+  .option-range
+  input[type='range']::-webkit-slider-thumb {
   -webkit-appearance: none;
 }
-.content .credit-calculate #options-calculate .option-range input[type='range']::-webkit-slider-thumb {
+.content
+  .credit-calculate
+  #options-calculate
+  .option-range
+  input[type='range']::-webkit-slider-thumb {
   background-color: #fff;
   width: 11px;
   height: 11px;
   border-radius: 50%;
   margin-top: -4px;
   cursor: pointer;
-  filter: drop-shadow(0px 2px 2px rgba(0,0,0,0.5));
+  filter: drop-shadow(0px 2px 2px rgba(0, 0, 0, 0.5));
 }
-.content .credit-calculate #options-calculate .option-range input[type='range']::-webkit-slider-runnable-track {
+.content
+  .credit-calculate
+  #options-calculate
+  .option-range
+  input[type='range']::-webkit-slider-runnable-track {
   background-color: #fff;
   height: 3px;
   border-radius: 2px;
@@ -266,7 +282,7 @@ export default {
 .content .credit-calculate #options-calculate button {
   background-color: #242424;
   border-radius: 5px;
-  filter: drop-shadow(0px 2px 2px rgba(0,0,0,0.5));
+  filter: drop-shadow(0px 2px 2px rgba(0, 0, 0, 0.5));
   height: 56px;
   width: 100%;
   border: none;
@@ -320,7 +336,7 @@ export default {
   width: 10px;
   height: 10px;
   position: absolute;
-  left: 4px
+  left: 4px;
 }
 .content .credit-calculate .counter {
   width: 49px;
@@ -442,7 +458,7 @@ export default {
   margin-top: 15px;
 }
 .content .prices p {
-  color: #FFF;
+  color: #fff;
   text-align: center;
 }
 .content .prices div {
@@ -467,7 +483,7 @@ export default {
   .only-mobile {
     display: none !important;
   }
- /*  body {
+  /*  body {
     flex-direction: row;
   } */
   .content {

@@ -51,6 +51,13 @@ export default {
       required: false,
       default: '',
     },
+    setDefaultFunction: {
+      type: Function,
+      required: false,
+      default() {
+        return null
+      },
+    },
   },
   data() {
     return {
@@ -63,10 +70,8 @@ export default {
       options: this.optionsValue,
     }
   },
-  computed: {
-    selectedKey() {
-      return this.value
-    },
+  mounted() {
+    console.log('selected', this.setDefaultFunction)
   },
   methods: {
     onChange(value) {
@@ -77,6 +82,18 @@ export default {
       this.open = false
       this.$emit('input', value.value)
     },
+    /* setDefault(defaultValue, optionsSelect) {
+      if (defaultValue) {
+        const filterValue = optionsSelect.filter(
+          (option) => option.slug === defaultValue
+        )
+        if (filterValue) {
+          this.onChange(filterValue[0])
+          return filterValue[0].text
+        }
+      }
+      return null
+    }, */
   },
 }
 </script>

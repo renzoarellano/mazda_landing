@@ -13,7 +13,7 @@
         class="radiobuttons_container__radios__label"
       >
         <input
-          :v-model="value"
+          :model="value"
           :name="labelName"
           :value="val"
           type="radio"
@@ -42,7 +42,7 @@ export default {
     value: {
       // selected Radio Button
       type: Number || String,
-      default: '  ',
+      default: '',
     },
     displayMode: {
       // selected Radio Button
@@ -60,6 +60,9 @@ export default {
     return {
       titleRadioSection: this.title,
     }
+  },
+  mounted() {
+    console.log('this.value', this.value)
   },
 }
 </script>
