@@ -1,5 +1,8 @@
 export default {
   // Global page headers: https://go.nuxtjs.dev/config-head
+  generate: {
+    fallback: true,
+  },
   head: {
     title: 'Mazda - Derco Perú',
     htmlAttrs: {
