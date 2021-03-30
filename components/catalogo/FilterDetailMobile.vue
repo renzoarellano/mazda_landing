@@ -3,7 +3,19 @@
     <section
       v-if="showFiltroMobile"
       class="sidebar col-md-4 col-lg-3 col-xl-3"
-      :class="showFiltroMobile ? 'sideBarMobile' : ''"
+      :style="
+        showFiltroMobile
+          ? {
+              position: 'fixed !important',
+              width: '100% !important',
+              minHeight: '100vh',
+              zIndex: 999,
+              display: ' block !important',
+              top: 0,
+              left: 0,
+            }
+          : {}
+      "
     >
       <div class="model-car only-desktop col-12">
         <p>Modelo</p>
