@@ -1,21 +1,21 @@
 <template>
   <swiper ref="mySwiper" class="sliderContainer" :options="swiperOptions">
-    <!-- <div v-for="banner in banners" :key="banner.id" class="slideDimensions">
-      <swiper-slide>
-        <img
-          class="slideImage"
-          :src="imagesUrl + banner.image"
-          :alt="banner.title"
-        />
-      </swiper-slide>
-    </div> -->
-    <div slot="pagination" class="swiper-pagination"></div>
+    <swiper-slide v-for="(banner, index) in imgDetail" :key="index">
+      <img
+        class="slideImage"
+        :src="'https://cotizadorderco.com/forms/campanaMazda' + banner"
+        alt="Mazda - Campaña"
+      />
+    </swiper-slide>
+
+    <!--     <div slot="pagination" class="swiper-pagination"></div> -->
     <div slot="button-prev" class="swiper-button-prev"></div>
     <div slot="button-next" class="swiper-button-next"></div>
   </swiper>
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 export default {
   name: 'Carrousel',
   data() {
@@ -30,34 +30,27 @@ export default {
         },
         slidesPerView: 1,
         loop: true,
-        pagination: {
+        /* pagination: {
           el: '.swiper-pagination',
           clickable: true,
-        },
+        }, */
       },
-      banners: [],
-      imagesUrl: 'process.env.imagesUrl',
     }
   },
   computed: {
     swiper() {
-      return this.$refs.mySwiper.$swiper
+      return this.imgDetail ? this.$refs.mySwiper.$swiper : null
     },
+    ...mapGetters({
+      imgDetail: 'detailcar/imagesDetail',
+    }),
   },
   mounted() {
-    this.getBanners()
-    this.swiper.slideTo(1, 300, false)
+    if (this.imgDetail.length) {
+      this.swiper.slideTo(1, 300, false)
+    }
   },
-  methods: {
-    async getBanners() {
-      /* const token = (await 'Bearer ') + this.$store.getters.getBrandData.token
-      const url = process.env.apiUrl + '/banner'
-      const headers = {
-        Authorization: token
-      }
-      this.banners = await this.$axios.$get(url, headers) */
-    },
-  },
+  methods: {},
 }
 </script>
 
@@ -69,6 +62,25 @@ export default {
 }
 .sliderContainer {
   width: 100%;
-  margin-top: 76px;
+  margin-top: 25px;
+}
+.swiper-button-next:after,
+.swiper-container-rtl .swiper-button-prev:after {
+  color: white;
+}
+.swiper-button-prev:after,
+.swiper-container-rtl .swiper-button-next:after {
+  color: white;
+}
+
+@media (max-width: 767px) {
+  .swiper-button-next:after,
+  .swiper-container-rtl .swiper-button-prev:after {
+    font-size: 25px;
+  }
+  .swiper-button-prev:after,
+  .swiper-container-rtl .swiper-button-next:after {
+    font-size: 25px;
+  }
 }
 </style>

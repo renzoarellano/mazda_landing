@@ -75,3 +75,477 @@
     margin: 0px auto 30px auto ;
   }
 }
+
+
+//FilterDetail
+.sidebar {
+  width: 100%;
+  filter: drop-shadow((-13px) 0 5px rgba(0, 0, 0, 0.49));
+  padding: 15px 15px 0;
+  position: fixed !important;
+  background-image: linear-gradient(225deg, #363636 0%, #0c0c0c 100%);
+  height: auto;
+  max-height: 100vh;
+  overflow: auto;
+  transition: 0.5s all ease-in-out;
+
+  &.active {
+    left: 0;
+    z-index: 1;
+  }
+}
+
+.model-car {
+  margin-bottom: 32px;
+
+  p {
+    color: #b4b4b4;
+    font-size: 14px;
+    text-transform: uppercase;
+    margin: 0 0 10px;
+  }
+}
+
+.filters .prices p, .sidebar .top-sidebar p {
+  color: #b4b4b4;
+  font-size: 14px;
+  text-transform: uppercase;
+  margin: 0 0 10px;
+}
+
+.model-car h5 {
+  font-size: 16px;
+  color: #ffffff;
+  text-transform: uppercase;
+  margin: 0;
+}
+
+.filters {
+  .versions, .years, .views, .colors, .credit-calculate {
+    border-radius: 5px;
+    background-color: #000000;
+    width: 100%;
+    color: #cfcfcf;
+    font-size: 16px;
+    padding: 15px;
+    margin-bottom: 12px;
+  }
+
+  .versions div, .credit-calculate .btn-calculate {
+    display: flex;
+    justify-content: space-between;
+    text-transform: uppercase;
+  }
+}
+
+.sidebar .top-sidebar {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 24px;
+
+  p {
+    font-size: 18px;
+  }
+
+  a img {
+    width: 12px;
+  }
+}
+
+.filters {
+  .versions {
+    div {
+      cursor: pointer;
+      transition: 0.5s ease-in-out;
+    }
+
+    img {
+      transform: rotate(90deg);
+      width: 14px;
+    }
+
+    &.active img {
+      transform: rotate(270deg);
+    }
+  }
+
+  .years p, .views p, .colors p {
+    text-transform: uppercase;
+    margin: 0;
+  }
+
+  .years ul, .colors ul {
+    display: flex;
+    padding: 0;
+    list-style: none;
+  }
+
+  .years ul {
+    li:not(:last-child) {
+      margin-right: 24px;
+    }
+
+    input {
+      margin: 0;
+    }
+
+    label {
+      color: #d0d0d0;
+      font-size: 16px;
+      letter-spacing: 1px;
+    }
+  }
+
+  .views ul {
+    label {
+      color: #d0d0d0;
+      font-size: 16px;
+      letter-spacing: 1px;
+    }
+
+    li {
+      margin-bottom: 12px;
+    }
+
+    padding: 0;
+    list-style: none;
+  }
+
+  .prices {
+    p {
+      margin-top: 15px;
+    }
+
+    div {
+      color: #d8d8d8;
+      font-size: 21px;
+      letter-spacing: 2px;
+      line-height: 27px;
+      font-weight: bold;
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 32px;
+    }
+  }
+
+  .credit-calculate .btn-calculate.active, .versions.active div {
+    padding-bottom: 15px;
+    border-bottom: 0.5px solid #3b3b3b;
+  }
+
+  .credit-calculate {
+    .btn-calculate {
+      cursor: pointer;
+      transition: 0.5s ease-in-out;
+
+      img {
+        width: 13px;
+      }
+    }
+
+    #options-calculate {
+      padding-top: 15px;
+
+      > div {
+        display: flex;
+        justify-content: space-between;
+        padding: 15px 0;
+        font-size: 14px;
+        letter-spacing: 1px;
+        color: #d0d0d0;
+        flex-wrap: wrap;
+        align-items: center;
+      }
+
+      .option-range {
+        span {
+          color: #6c6c6c;
+          font-size: 12px;
+        }
+
+        input {
+          width: 100%;
+          margin-bottom: 10px;
+
+          &[type='range'] {
+            -webkit-appearance: none;
+
+            &::-webkit-slider-runnable-track {
+              -webkit-appearance: none;
+            }
+
+            &::-webkit-slider-thumb {
+              -webkit-appearance: none;
+              background-color: #fff;
+              width: 11px;
+              height: 11px;
+              border-radius: 50%;
+              margin-top: -4px;
+              cursor: pointer;
+              filter: drop-shadow(0px 2px 2px rgba(0, 0, 0, 0.5));
+            }
+
+            &::-webkit-slider-runnable-track {
+              background-color: #fff;
+              height: 3px;
+              border-radius: 2px;
+            }
+          }
+        }
+      }
+
+      .option-value {
+        border-top: 0.5px solid #3b3b3b;
+        border-bottom: 0.5px solid #3b3b3b;
+        text-transform: uppercase;
+      }
+
+      .ref-value img {
+        width: 12px;
+      }
+
+      button {
+        background-color: #242424;
+        border-radius: 5px;
+        filter: drop-shadow(0px 2px 2px rgba(0, 0, 0, 0.5));
+        height: 56px;
+        width: 100%;
+        border: none;
+        outline: none;
+        margin-top: 32px;
+        font-size: 14px;
+        font-family: 'mazda_regular';
+        letter-spacing: 1px;
+        color: #d0d0d0;
+        text-transform: uppercase;
+        cursor: pointer;
+      }
+    }
+  }
+
+  .buttons {
+    margin-top: 75px;
+  }
+
+  button {
+    border-radius: 5px;
+    width: 100%;
+    height: 56px;
+    filter: drop-shadow(0px 2px 2px rgba(0, 0, 0, 0.5));
+    font-size: 14px;
+    letter-spacing: 1px;
+    color: #d0d0d0;
+    text-transform: uppercase;
+    border: none;
+    font-family: 'mazda_regular';
+    outline: none;
+
+    &.btn-blackgray {
+      background-color: #242424;
+      margin-bottom: 15px;
+      font-family: 'mazda_regular';
+    }
+  }
+
+  .buttons button.btn-red {
+    background-color: #781326;
+    font-family: 'mazda_regular';
+  }
+
+  .item-radiobutton, .credit-calculate .item-checkbox {
+    position: relative;
+  }
+
+  .item-radiobutton input, .credit-calculate .item-checkbox input {
+    position: absolute;
+    opacity: 0;
+  }
+
+  .item-radiobutton input {
+    width: 19px;
+    height: 19px;
+  }
+
+  .credit-calculate .item-checkbox input {
+    width: 16px;
+    height: 16px;
+  }
+
+  .item-radiobutton label, .credit-calculate .item-checkbox label {
+    position: relative;
+    cursor: pointer;
+    height: 19px;
+    padding: 0;
+    align-items: center;
+    display: flex;
+  }
+
+  .item-radiobutton {
+    label {
+      &:before {
+        content: '';
+        margin-right: 10px;
+        width: 19px;
+        height: 19px;
+        border: 0.5px solid #ededed;
+        border-radius: 50%;
+      }
+
+      &:after {
+        content: '';
+        background-color: transparent;
+        width: 9px;
+        height: 9px;
+        border-radius: 50%;
+        position: absolute;
+        left: 6px;
+      }
+    }
+
+    input:checked + label:after {
+      background-color: #dbdbdb;
+    }
+  }
+
+  .credit-calculate {
+    .item-checkbox {
+      input:checked + label:after {
+        background-color: #dbdbdb;
+      }
+
+      label {
+        &:before {
+          content: '';
+          width: 16px;
+          height: 16px;
+          border: 1px solid #797979;
+          border-radius: 2px;
+        }
+
+        &:after {
+          content: '';
+          background-color: transparent;
+          width: 10px;
+          height: 10px;
+          position: absolute;
+          left: 4px;
+        }
+      }
+    }
+
+    .counter {
+      width: 49px;
+      height: 23px;
+      border-radius: 2px;
+      background-color: #292929;
+      display: flex;
+      align-items: center;
+
+      div {
+        display: flex;
+        flex-direction: column;
+      }
+
+      input {
+        width: 35px;
+        background: transparent;
+        border: none;
+        outline: none;
+        color: #d0d0d0;
+        font-size: 14px;
+        letter-spacing: 1px;
+        padding: 0 5px;
+        text-align: right;
+      }
+
+      span {
+        height: 6px;
+        display: flex;
+        align-items: center;
+
+        svg {
+          width: 6px;
+          height: 10px;
+          fill: #e6e6e6;
+        }
+
+        &:first-child {
+          transform: rotate(180deg);
+          margin-bottom: 2px;
+        }
+      }
+    }
+  }
+}
+
+.hide, .only-desktop {
+  display: none;
+}
+
+.only-mobile {
+  display: block;
+}
+
+@media screen and (min-width: 992px) {
+  .only-desktop {
+    display: block !important;
+  }
+
+  .only-mobile {
+    display: none !important;
+  }
+
+  .sidebar {
+    background-image: linear-gradient(225deg, #363636 0%, #0c0c0c 100%);
+    padding: 40px 16px;
+    position: relative;
+    height: auto;
+    overflow: auto;
+  }
+
+  .model-car h5 {
+    font-size: 18px;
+  }
+}
+@media (max-width: 767px) {
+  .mobVersionFilterDetail {
+    display: none;
+  }
+  .model-car{
+    margin-top: 25px;
+  }
+  .new-only-mobile {
+    display: block !important;
+  }
+  .new-only-mobile-flex{
+    display: flex !important;
+  }
+}
+@media (min-width: 768px) {
+  .new-only-mobile {
+    display: none !important;
+  }
+  .new-only-mobile-flex{
+    display: none !important;
+  }
+}
+.hiddenItem{
+  display: none;
+}
+#btnCalculateMob{
+  position: absolute;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    border: none;
+    outline: none;
+    cursor: pointer;
+    width: 77px;
+    height: 36px;
+    border-radius: 5px;
+    background-color: #000000;
+    font-size: 12px;
+    letter-spacing: 1px;
+    color: #cfcfcf;
+    text-transform: uppercase;
+}

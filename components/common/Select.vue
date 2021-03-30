@@ -6,7 +6,7 @@
     @blur="open = false"
   >
     <div class="selectedValue" :class="{ open: open }" @click="open = !open">
-      {{ selected }}
+      {{ selected ? selected.toUpperCase() : '' }}
     </div>
     <div
       class="items"
@@ -54,19 +54,19 @@ export default {
   },
   data() {
     return {
-      selected: this.default
-        ? this.default
-        : this.optionsValue.length > 0
-        ? this.optionsValue[0].text
-        : null,
+      selected: null,
       open: false,
       options: this.optionsValue,
     }
   },
-  computed: {
-    selectedKey() {
-      return this.value
+  watch: {
+    optionsValue(newOptions) {
+      this.options = newOptions
+      this.settingData()
     },
+  },
+  mounted() {
+    this.settingData()
   },
   methods: {
     onChange(value) {
@@ -76,6 +76,16 @@ export default {
       this.selected = value.text
       this.open = false
       this.$emit('input', value.value)
+    },
+    settingData() {
+      if (this.default && this.optionsValue) {
+        const option = this.optionsValue.find(
+          (option) => option.slug === this.default
+        )
+        this.onChange(option)
+      } else {
+        this.selected = this.optionsValue ? this.optionsValue[0].text : null
+      }
     },
   },
 }

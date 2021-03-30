@@ -8,19 +8,23 @@
       "
     >
       <label
-        v-for="(val, key) in options"
-        :key="val"
+        v-for="(val, index) in options"
+        :key="index"
         class="radiobuttons_container__radios__label"
+        style="padding-left: 5px; padding-top: 5px"
       >
         <input
           :name="labelName"
-          :value="val"
+          :value="val.color"
           type="radio"
-          :checked="val == defaultValue"
+          :checked="val.color == defaultValue"
           @change="onChange(val)"
         />
-        {{ key }}
-        <span class="checkmark"></span>
+        <div
+          class="checkedRadioButtonBody"
+          :style="{ backgroundColor: val.icono }"
+        ></div>
+        <span class="checkmarkColors"></span>
       </label>
     </div>
   </div>
@@ -28,7 +32,7 @@
 
 <script>
 export default {
-  name: 'RadioButtons',
+  name: 'RadioButtonColors',
   props: {
     title: {
       type: String,
@@ -70,7 +74,7 @@ export default {
   },
   methods: {
     onChange(val) {
-      this.$emit('input', val)
+      this.$emit('input', val.color)
     },
     settingData() {
       if (this.defaultValue) {
@@ -81,4 +85,26 @@ export default {
 }
 </script>
 
-<style></style>
+<style>
+.checkedRadioButtonBody {
+  width: 20px;
+  height: 20px;
+  border-radius: 100%;
+}
+.radiobuttons_container__radios__label input:checked ~ .checkmarkColors {
+  background-color: transparent;
+  border: 3px solid #3e3e3e;
+}
+.checkmarkColors {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 30px;
+  width: 30px;
+  border-radius: 50%;
+}
+
+.radiobuttons_container__radios__label input:checked ~ .checkmarkColors:after {
+  display: block;
+}
+</style>

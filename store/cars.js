@@ -119,10 +119,6 @@ export const actions = {
     }
   },
   async filterCars({ commit, state }, filterView) {
-    console.log(
-      '🚀 ~ file: cars.js ~ line 122 ~ filterCars ~ filterView',
-      filterView
-    )
     const models = []
     const category = []
     let newArrayData = [] // array Final de resultados
@@ -141,7 +137,6 @@ export const actions = {
         'api/v6/models/search?page=1',
         objectFilter
       )
-      console.log('🚀 ~ file: cars.js ~ line 147 ~ filterCars ~ data', data)
 
       data.forEach((model) => {
         state.slugsAPI.forEach((slug) => {
@@ -198,7 +193,6 @@ export const actions = {
           ) {
             return -1
           }
-          // a must be equal to b
           return 0
         })
         commit(SET_CARS, nowCars)
@@ -214,7 +208,6 @@ export const actions = {
           ) {
             return -1
           }
-          // a must be equal to b
           return 0
         })
         commit(SET_CARS, nowCars)
@@ -255,9 +248,6 @@ export const mutations = {
         break
       case 'models':
         state.bodySearch.filters.models = data.value
-        break
-      case 'order':
-        state.bodySearch.order = data.value
         break
       case 'page':
         state.paginationSearch.currentPage = data.value
