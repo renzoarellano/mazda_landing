@@ -1,0 +1,31 @@
+- name: Nuxt to Github Pages
+  # You may pin to the exact commit or the version.
+  # uses: ashkantaravati/NuxtToGithubPages@1d3040411fc2d234b6907434dc8560100171e3fb
+  uses: ashkantaravati/NuxtToGithubPages@v1.0
+  with:
+    # Your username
+    username: renzoarellano
+    # Your reponame
+    reponame: mazda_landing
+    # Your Github token
+    token: wmunozarellano@gmail.com
+    # Your git commit email
+    gitemail: wmunozarellano@gmail.com
+    # Your git commit name
+    gitname: renzoarellano
+    # Your git commit message
+    gitmsg: # optional, default is deploy
+    # Your custom domain
+    cname: # optional, default is none
+      run: |
+        # Build and test the project, then
+        # deploy to Azure Web App.
+        npm install
+        npm run build --if-present
+        npm run test --if-present
+    - name: 'Deploy to Azure WebApp'
+      uses: azure/webapps-deploy@v2
+      with:
+        app-name: ${{ env.AZURE_WEBAPP_NAME }}
+        publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
+        package: ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}
