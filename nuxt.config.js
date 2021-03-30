@@ -3,6 +3,7 @@ export default {
   generate: {
     fallback: true,
   },
+  ssr: false,
   target: 'static',
   /// //////
   head: {
