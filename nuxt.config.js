@@ -51,9 +51,7 @@ export default {
   // Axios module configuration: https://go.nuxtjs.dev/config-axios
   axios: {
     // eslint-disable-next-line node/no-deprecated-api
-    baseURL:
-      process.env.API_BASE_URL ||
-      'http://suzuki-middleware.qa.dercoperu.soho.cl',
+    baseURL: process.env.API_BASE_URL || 'https://middleware.derco.com.pe/',
     headers: {
       common: {
         'blog-url': process.env.SITE_TOKEN || 'mazda',
