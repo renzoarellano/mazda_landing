@@ -44,8 +44,8 @@ export default {
     },
     defaultValue: {
       // selected Radio Button
-      type: Number || String,
-      default: '' || 0,
+      type: String,
+      default: '',
     },
     displayMode: {
       // selected Radio Button
@@ -53,9 +53,9 @@ export default {
       default: 'column',
     },
     options: {
-      type: Object,
+      type: Array,
       default() {
-        return {}
+        return []
       },
     },
   },
@@ -74,11 +74,11 @@ export default {
   },
   methods: {
     onChange(val) {
-      this.$emit('input', val.color)
+      this.$emit('input', val)
     },
     settingData() {
       if (this.defaultValue) {
-        this.onChange(this.defaultValue)
+        this.onChange(this.defaultValue.color)
       }
     },
   },

@@ -39,6 +39,7 @@ export default {
   },
   computed: {
     swiper() {
+      console.log('this.imgDetail', this.imgDetail)
       return this.imgDetail ? this.$refs.mySwiper.$swiper : null
     },
     ...mapGetters({
@@ -46,7 +47,7 @@ export default {
     }),
   },
   mounted() {
-    if (this.imgDetail.length) {
+    if (this.imgDetail) {
       this.swiper.slideTo(1, 300, false)
     }
   },
