@@ -167,7 +167,9 @@ export const actions = {
         versionsWithTransmision.push(fixedVersion)
       }
     })
-    commit(SET_SELECTED_VERSIONS, versionsWithTransmision)
+    if (versionsWithTransmision.length) {
+      commit(SET_SELECTED_VERSIONS, versionsWithTransmision)
+    }
   },
   settingObjectPriceByYear({ commit, state }) {
     const setPrices = state.version.prices
