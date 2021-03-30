@@ -17,7 +17,7 @@
         :options-value="optionsVersions"
       />
       <RadioButtons
-        v-show="years && yearSelected"
+        v-if="years && yearSelected"
         v-model="selectedRadioButtonYear"
         :title="titleRadioButtonsYear"
         :label-name="labelRadioButtonsYear"
@@ -26,7 +26,7 @@
         :display-mode="'row'"
       />
       <RadioButtons
-        v-show="views && viewSelected"
+        v-if="views && viewSelected"
         v-model="selectedRadioButtonView"
         :title="titleRadioButtonsView"
         :label-name="labelRadioButtonsView"
@@ -34,7 +34,7 @@
         :default-value="viewSelected"
       />
       <RadioButtonColors
-        v-show="colorsOptions && colorSelected"
+        v-if="colorsOptions && colorSelected"
         v-model="selectedRadioButtonColor"
         :title="titleRadioButtonsColor"
         :label-name="labelRadioButtonsColor"
@@ -210,6 +210,10 @@ export default {
       this.setColorCaption(view)
     },
     selectedRadioButtonColor(color) {
+      console.log(
+        '🚀 ~ file: FilterDetail.vue ~ line 213 ~ selectedRadioButtonColor ~ color',
+        color
+      )
       this.setImagesByColor(color)
     },
   },

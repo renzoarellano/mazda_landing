@@ -35,26 +35,26 @@
         />
         <RadioButtons
           v-show="years && yearSelected"
-          v-model="selectedRadioButtonYear"
-          :title="titleRadioButtonsYear"
-          :label-name="labelRadioButtonsYear"
+          v-model="selectedRadioButtonYearMobile"
+          :title="titleRadioButtonsYearMobile"
+          :label-name="labelRadioButtonsYearMobile"
           :options="years"
           :default-value="yearSelected"
           :display-mode="'row'"
         />
         <RadioButtons
           v-show="views && viewSelected"
-          v-model="selectedRadioButtonView"
-          :title="titleRadioButtonsView"
-          :label-name="labelRadioButtonsView"
+          v-model="selectedRadioButtonViewMobile"
+          :title="titleRadioButtonsViewMobile"
+          :label-name="labelRadioButtonsViewMobile"
           :options="views"
           :default-value="viewSelected"
         />
         <RadioButtonColors
           v-show="colorsOptions && colorSelected"
-          v-model="selectedRadioButtonColor"
-          :title="titleRadioButtonsColor"
-          :label-name="labelRadioButtonsColor"
+          v-model="selectedRadioButtonColorMobile"
+          :title="titleRadioButtonsColorMobile"
+          :label-name="labelRadioButtonsColorMobile"
           :options="colorsOptions"
           :default-value="colorSelected"
           :display-mode="'row'"
@@ -160,7 +160,7 @@
             cotiza ahora
           </button>
           <button
-            v-show="!disabledReserva"
+            v-if="!disabledReserva"
             class="btn-red"
             @click="actionReserva"
           >
@@ -189,17 +189,17 @@ export default {
   data() {
     return {
       selectedVersion: null,
-      selectedRadioButtonYear: null,
-      titleRadioButtonsYear: 'AÑO',
-      labelRadioButtonsYear: 'RadioButtonsYear',
-      selectedRadioButtonView: null,
-      titleRadioButtonsView: 'VISTAS',
-      labelRadioButtonsView: 'RadioButtonsView',
+      selectedRadioButtonMobile: null,
+      titleRadioButtonsMobile: 'AÑO',
+      labelRadioButtonsMobile: 'RadioButtonsYearMobile',
+      selectedRadioButtonViewMobile: null,
+      titleRadioButtonsViewMobile: 'VISTAS',
+      labelRadioButtonsViewMobile: 'RadioButtonsViewMobile',
       setLinkReserva: '',
       disabledReserva: false,
-      selectedRadioButtonColor: null,
-      titleRadioButtonsColor: 'COLORES',
-      labelRadioButtonsColor: 'RadioButtonsColor',
+      selectedRadioButtonColorMobile: null,
+      titleRadioButtonsColorMobile: 'COLORES',
+      labelRadioButtonsColorMobile: 'RadioButtonsColorMobile',
       showFiltroMobile: false,
     }
   },

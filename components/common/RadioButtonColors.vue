@@ -18,7 +18,7 @@
           :value="val.color"
           type="radio"
           :checked="val.color == defaultValue"
-          @change="onChange(val)"
+          @change="onChange(val.color)"
         />
         <div
           class="checkedRadioButtonBody"
