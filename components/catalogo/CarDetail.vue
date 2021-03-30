@@ -45,7 +45,7 @@
           cotiza ahora
         </button>
         <button
-          v-if="!disabledReserva"
+          v-show="!disabledReserva"
           class="btn-red only-mobile"
           @click="actionReserva"
         >

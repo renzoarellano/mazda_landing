@@ -17,7 +17,7 @@
         :options-value="optionsVersions"
       />
       <RadioButtons
-        v-if="years && yearSelected"
+        v-show="years && yearSelected"
         v-model="selectedRadioButtonYear"
         :title="titleRadioButtonsYear"
         :label-name="labelRadioButtonsYear"
@@ -26,7 +26,7 @@
         :display-mode="'row'"
       />
       <RadioButtons
-        v-if="views && viewSelected"
+        v-show="views && viewSelected"
         v-model="selectedRadioButtonView"
         :title="titleRadioButtonsView"
         :label-name="labelRadioButtonsView"
@@ -34,7 +34,7 @@
         :default-value="viewSelected"
       />
       <RadioButtonColors
-        v-if="colorsOptions && colorSelected"
+        v-show="colorsOptions && colorSelected"
         v-model="selectedRadioButtonColor"
         :title="titleRadioButtonsColor"
         :label-name="labelRadioButtonsColor"

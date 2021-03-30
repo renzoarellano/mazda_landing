@@ -1,8 +1,10 @@
 export default {
-  // Global page headers: https://go.nuxtjs.dev/config-head
+  // Config de netlify
   generate: {
     fallback: true,
   },
+  target: 'static',
+  /// //////
   head: {
     title: 'Mazda - Derco Perú',
     htmlAttrs: {
