@@ -1,7 +1,7 @@
 <template>
   <div class="col-12 np">
     <section
-      v-if="showFiltroMobile"
+      v-show="showFiltroMobile"
       class="sidebar col-md-4 col-lg-3 col-xl-3"
       :style="
         showFiltroMobile
@@ -34,7 +34,7 @@
           :options-value="optionsVersions"
         />
         <RadioButtons
-          v-if="years && yearSelected"
+          v-show="years && yearSelected"
           v-model="selectedRadioButtonYear"
           :title="titleRadioButtonsYear"
           :label-name="labelRadioButtonsYear"
@@ -43,7 +43,7 @@
           :display-mode="'row'"
         />
         <RadioButtons
-          v-if="views && viewSelected"
+          v-show="views && viewSelected"
           v-model="selectedRadioButtonView"
           :title="titleRadioButtonsView"
           :label-name="labelRadioButtonsView"
@@ -51,7 +51,7 @@
           :default-value="viewSelected"
         />
         <RadioButtonColors
-          v-if="colorsOptions && colorSelected"
+          v-show="colorsOptions && colorSelected"
           v-model="selectedRadioButtonColor"
           :title="titleRadioButtonsColor"
           :label-name="labelRadioButtonsColor"
@@ -160,7 +160,7 @@
             cotiza ahora
           </button>
           <button
-            v-if="!disabledReserva"
+            v-show="!disabledReserva"
             class="btn-red"
             @click="actionReserva"
           >

@@ -1,7 +1,7 @@
 <template>
   <b-container fluid class="catalogoContainer">
     <b-row>
-      <FilterComponent v-if="models" :models="models" />
+      <FilterComponent v-show="models" :models="models" />
       <CatalogoComponent :items="cars" />
     </b-row>
   </b-container>

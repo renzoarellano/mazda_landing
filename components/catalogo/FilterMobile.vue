@@ -1,6 +1,6 @@
 <template>
   <div class="col-12 np">
-    <div v-if="showModal" class="col-12 filterPadMobile">
+    <div v-show="showModal" class="col-12 filterPadMobile">
       <div class="filterContainer col-12 filterContainerMobile">
         <div class="col-12 topTitleFilterMobile">
           <h2>FILTROS</h2>
