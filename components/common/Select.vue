@@ -6,7 +6,7 @@
     @blur="open = false"
   >
     <div class="selectedValue" :class="{ open: open }" @click="open = !open">
-      {{ selected }}
+      {{ selected ? selected.toUpperCase() : '' }}
     </div>
     <div
       class="items"
@@ -51,27 +51,22 @@ export default {
       required: false,
       default: '',
     },
-    setDefaultFunction: {
-      type: Function,
-      required: false,
-      default() {
-        return null
-      },
-    },
   },
   data() {
     return {
-      selected: this.default
-        ? this.default
-        : this.optionsValue.length > 0
-        ? this.optionsValue[0].text
-        : null,
+      selected: null,
       open: false,
       options: this.optionsValue,
     }
   },
+  watch: {
+    optionsValue(newOptions) {
+      this.options = newOptions
+      this.settingData()
+    },
+  },
   mounted() {
-    console.log('selected', this.setDefaultFunction)
+    this.settingData()
   },
   methods: {
     onChange(value) {
@@ -82,18 +77,16 @@ export default {
       this.open = false
       this.$emit('input', value.value)
     },
-    /* setDefault(defaultValue, optionsSelect) {
-      if (defaultValue) {
-        const filterValue = optionsSelect.filter(
-          (option) => option.slug === defaultValue
+    settingData() {
+      if (this.default && this.optionsValue) {
+        const option = this.optionsValue.find(
+          (option) => option.slug === this.default
         )
-        if (filterValue) {
-          this.onChange(filterValue[0])
-          return filterValue[0].text
-        }
+        this.onChange(option)
+      } else {
+        this.selected = this.optionsValue ? this.optionsValue[0].text : null
       }
-      return null
-    }, */
+    },
   },
 }
 </script>

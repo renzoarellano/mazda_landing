@@ -1,45 +1,60 @@
 <template>
   <section class="content col-12 col-md-8 offset-md-4 col-lg-9 offset-lg-3">
-    <div class="model-car only-mobile">
-      <p>Modelo</p>
-      <h5>all-new mazda3 sport</h5>
-      <button id="btnCalculateMob" class="only-mobile">filtros</button>
+    <div class="model-car new-only-mobile-flex row">
+      <div class="col-8">
+        <p>Modelo</p>
+        <h5>{{ model.name }}</h5>
+      </div>
+      <div class="col-4">
+        <FilterDetailMobileComponent />
+      </div>
     </div>
     <div class="btn-back only-desktop">
-      <a href="#">
+      <nuxt-link to="/catalogo">
         <img src="../../assets/icons/next.svg" alt="" /> volver al catálogo
-      </a>
+      </nuxt-link>
     </div>
     <ul class="tabs-type">
-      <li>mecánico</li>
-      <li class="active">automático</li>
+      <li
+        :class="stateTransmision == 'mecanico' ? 'active' : ''"
+        @click="setTransmision('mecanico')"
+      >
+        mecánico
+      </li>
+      <li
+        :class="stateTransmision == 'automatico' ? 'active' : ''"
+        @click="setTransmision('automatico')"
+      >
+        automático
+      </li>
     </ul>
-    <div class="slider">
-      <ul>
-        <li>
-          <img src="../../assets/images/auto.png" alt="" />
-        </li>
-      </ul>
-    </div>
+    <Carrousel />
     <div class="prices only-mobile">
-      <p>all-new automático 2.5 high</p>
-      <div><span>US$ 18,900</span>|<span>S/ 68,364</span></div>
+      <p>{{ model.name }}</p>
+      <div>
+        <span>US$ {{ objectPrices ? objectPrices.value : '' }}</span
+        >|<span>S/ {{ objectPrices ? objectPrices.convertedValue : '' }}</span>
+      </div>
     </div>
     <div class="detail-car">
-      <div class="description">
-        <p>Tracción AWD</p>
-        <p>6 Airbags</p>
-        <p>Sistema de sonido Bose</p>
-        <p>Apple CarPlay</p>
-        <p>Cámara de retroceso y sensores</p>
+      <div class="description" style="white-space: pre-line">
+        {{ stateVersion.extra }}
       </div>
       <div>
-        <button class="btn-blackgray only-mobile">cotiza ahora</button>
-        <button class="btn-red only-mobile">reservar</button>
-        <button>descargar brochure</button>
+        <button class="btn-blackgray only-mobile" @click="cotizacionMazda">
+          cotiza ahora
+        </button>
+        <button
+          v-if="!disabledReserva"
+          class="btn-red only-mobile"
+          @click="actionReserva"
+        >
+          reservar
+        </button>
+        <button @click="openBrochure">descargar brochure</button>
       </div>
     </div>
-    <div id="credit-calculate-mob" class="credit-calculate only-mobile">
+    <!-- <div id="credit-calculate-mob" class="credit-calculate hiddenItem">
       <div class="btn-calculate">
         Calcular credito
         <img id="img-plus" src="../../assets/icons/plus.svg" alt="" />
@@ -125,19 +140,76 @@
         </div>
         <button>quiero este</button>
       </div>
-    </div>
+    </div> -->
   </section>
 </template>
 
 <script>
+import { mapGetters, mapActions } from 'vuex'
+import Carrousel from '~/components/common/SwiperSlider'
+import FilterDetailMobileComponent from '~/components/catalogo/FilterDetailMobile'
 export default {
   name: 'CarDetailComponent',
-  components: {},
+  components: { Carrousel, FilterDetailMobileComponent },
   props: {},
   data() {
-    return {}
+    return {
+      disabledReserva: false,
+    }
   },
-  methods: {},
+  computed: {
+    ...mapGetters({
+      versions: 'detailcar/modelVersions',
+      model: 'detailcar/modelData',
+      years: 'detailcar/yearsByVersion',
+      yearSelected: 'detailcar/selectedYear',
+      views: 'detailcar/viewsByVersion',
+      viewSelected: 'detailcar/selectedView',
+      stateVersion: 'detailcar/version',
+      stateTransmision: 'detailcar/transmision',
+      objectPrices: 'detailcar/objectPriceByYear',
+    }),
+  },
+  async mounted() {
+    if (this.stateVersion && this.yearSelected) {
+      const body = [
+        {
+          sap: this.stateVersion.code,
+          year: this.yearSelected,
+        },
+      ]
+      const data = await this.$axios.$post(
+        'https://apistore.derco.com.pe/api/store/cars/reservationlink',
+        JSON.stringify(body)
+      )
+      if (data) {
+        const link = data[0].prices[0].link || ''
+        if (link) {
+          this.setLinkReserva = link
+        } else {
+          this.disabledReserva = true
+        }
+      }
+    }
+  },
+  methods: {
+    openBrochure() {
+      window.open(
+        this.model.specsSheetUrl,
+        '_blank' // <- This is what makes it open in a new window.
+      )
+    },
+    cotizacionMazda() {
+      const URL = `https://www.mazda.pe/cotizacion?id=${this.stateVersion.id}&year=${this.yearSelected}`
+      window.location.href = URL
+    },
+    actionReserva() {
+      window.location.href = this.setLinkReserva
+    },
+    ...mapActions({
+      setTransmision: 'detailcar/settingTransmision',
+    }),
+  },
 }
 </script>
 
@@ -145,6 +217,12 @@ export default {
 .content {
   width: 100%;
   padding: 0 15px 15px;
+}
+@media (max-width: 767px) {
+  .content {
+    width: 100%;
+    padding: 0px 15px 40px 15px;
+  }
 }
 .model-car {
   margin-bottom: 32px;
@@ -297,9 +375,12 @@ export default {
 .content .detail-car button.btn-blackgray {
   background-color: #242424;
   margin-bottom: 15px;
+  padding: 20px 40px;
+  font-family: 'mazda_regular';
 }
 .content .detail-car button.btn-red {
   background-color: #781326;
+  font-family: 'mazda_regular';
 }
 .content .credit-calculate .item-checkbox {
   position: relative;
@@ -443,6 +524,7 @@ export default {
 }
 .content .detail-car button {
   width: 100%;
+  min-width: 250px;
   height: 56px;
   text-align: center;
   background-color: black;
@@ -452,7 +534,9 @@ export default {
   text-transform: uppercase;
   border: none;
   border-radius: 5px;
+  font-family: 'mazda_regular';
   margin-top: 15px;
+  cursor: pointer;
 }
 .content .credit-calculate {
   margin-top: 15px;

@@ -28,7 +28,6 @@ export default {
   computed: {
     ...mapGetters({
       modelData: 'detailcar/modelData',
-      imagesDetail: 'detailcar/imagesDetail',
     }),
   },
 }

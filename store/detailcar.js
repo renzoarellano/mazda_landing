@@ -1,16 +1,28 @@
 /* eslint-disable no-console */
 export const SET_VERSIONS = 'SET_VERSIONS'
+export const SET_SELECTED_VERSIONS = 'SET_SELECTED_VERSIONS'
+export const SET_VERSION = 'SET_VERSION'
 export const SET_MODEL = 'SET_MODEL'
 export const SET_DETAIL_IMAGES = 'SET_DETAIL_IMAGES'
 export const SET_YEARS_BY_VERSION = 'SET_YEARS_BY_VERSION'
 export const SET_SELECTED_YEAR = 'SET_SELECTED_YEAR'
 export const SET_TRANSMISION = 'SET_TRANSMISION'
+export const SET_VIEWS_BY_VERSION = 'SET_VIEWS_BY_VERSION'
+export const SET_SELETED_VIEW = 'SET_SELETED_VIEW'
+export const SET_OBJECT_PRICE_BY_YEAR = 'SET_OBJECT_PRICE_BY_YEAR'
+export const SET_COLORS = 'SET_COLORS'
+export const SET_SELECTED_COLOR = 'SET_SELECTED_COLOR'
 export const state = () => ({
   modelData: {},
   imagesDetail: {},
   modelVersions: [],
+  version: {},
+  selectedVersions: [],
   yearsByVersion: [],
-  selectedYear: null,
+  selectedYear: '',
+  viewsByVersion: {},
+  selectedView: '',
+  objectPriceByYear: {},
   transmision: 'automatico',
   bodySearch: {
     filters: {
@@ -20,15 +32,24 @@ export const state = () => ({
     },
     order: 'asc',
   },
+  colors: [],
+  selectedColor: {},
 })
 
 export const getters = {
   modelData: (state) => state.modelData,
   imagesDetail: (state) => state.imagesDetail,
   modelVersions: (state) => state.modelVersions,
+  selectedVersions: (state) => state.selectedVersions,
+  version: (state) => state.version,
   yearsByVersion: (state) => state.yearsByVersion,
   selectedYear: (state) => state.selectedYear,
   transmision: (state) => state.transmision,
+  viewsByVersion: (state) => state.viewsByVersion,
+  selectedView: (state) => state.selectedView,
+  objectPriceByYear: (state) => state.objectPriceByYear,
+  colors: (state) => state.colors,
+  selectedColor: (state) => state.selectedColor,
   bodySearchFilters: (state) => {
     const filtersQuery = {}
     const filters = state.bodySearch.filters
@@ -47,14 +68,27 @@ export const getters = {
 }
 
 export const actions = {
-  async gettingImagesDetail({ commit }, slug) {
+  async gettingImagesDetail({ commit, state }, slug) {
     try {
-      const imagesDetail = await this.$axios.$get(
+      const getModel = await this.$axios.$get(
         `https://cotizadorderco.com/mazdaCampaign/getVersions/${slug}`
       )
-      commit(SET_MODEL, imagesDetail)
-      commit(SET_DETAIL_IMAGES, imagesDetail)
-      commit(SET_VERSIONS, imagesDetail.versions)
+
+      const versionsWithTransmision = []
+
+      getModel.versions.forEach((version) => {
+        if (version.transmission === state.transmision) {
+          const fixedVersion = {
+            ...version,
+            value: version.slug,
+            text: version.name,
+          }
+          versionsWithTransmision.push(fixedVersion)
+        }
+      })
+      commit(SET_MODEL, getModel)
+      commit(SET_VERSIONS, getModel.versions)
+      commit(SET_SELECTED_VERSIONS, versionsWithTransmision)
     } catch (error) {
       console.log(error)
     }
@@ -73,32 +107,84 @@ export const actions = {
       (version) => version.slug === slug
     )
     const optionsYears = {}
-
+    const optionsVistas = {}
     if (version) {
       version[0].prices.forEach((year) => {
         optionsYears[year.type] = parseInt(year.type)
       })
-      console.log(
-        '🚀 ~ file: detailcar.js ~ line 76 ~ settingYearData ~ optionsYears',
-        optionsYears
-      )
-      console.log('version[0].prices[0].type', version[0].prices[0].type)
+      const keys = Object.keys(version[0].campaingImgs)
+      if (keys) {
+        keys.forEach((key) => {
+          optionsVistas[key] = key
+        })
+      }
       commit(SET_YEARS_BY_VERSION, optionsYears)
       commit(SET_SELECTED_YEAR, parseInt(version[0].prices[0].type))
+      commit(SET_VIEWS_BY_VERSION, optionsVistas)
+      commit(SET_SELETED_VIEW, optionsVistas[keys[0]])
+      commit(SET_OBJECT_PRICE_BY_YEAR, version[0].prices[0])
+      commit(SET_DETAIL_IMAGES, version[0].campaingImgs[keys[0]][0].imgs)
+      commit(SET_COLORS, version[0].campaingImgs[keys[0]])
+      commit(SET_SELECTED_COLOR, version[0].campaingImgs[keys[0]][0].color)
     }
   },
   settingSelectedYear({ commit }, year) {
-    console.log(
-      '🚀 ~ file: detailcar.js ~ line 85 ~ settingSelectedYear ~ year',
-      year
-    )
     commit(SET_SELECTED_YEAR, year)
+  },
+  settingSelectedView({ commit }, view) {
+    commit(SET_SELETED_VIEW, view)
+  },
+  settingColorCaption({ commit, state }, view) {
+    if (view) {
+      const imgsDetail = state.version.campaingImgs[view]
+      commit(SET_DETAIL_IMAGES, imgsDetail[0].imgs)
+      commit(SET_COLORS, imgsDetail)
+      commit(SET_SELECTED_COLOR, imgsDetail[0].color)
+    }
+  },
+  settingImagesByColor({ commit, state }, color) {
+    if (color) {
+      const imgsDetail = state.version.campaingImgs[state.selectedView]
+      const images = imgsDetail.filter((view) => view.color === color)
+      commit(SET_DETAIL_IMAGES, images ? images[0].imgs : [])
+    }
+  },
+  settingTransmision({ commit, state }, transmision) {
+    commit(SET_TRANSMISION, transmision)
+    const versionsWithTransmision = []
+    state.modelVersions.forEach((version) => {
+      if (version.transmission === transmision) {
+        const fixedVersion = {
+          ...version,
+          value: version.slug,
+          text: version.name,
+        }
+        versionsWithTransmision.push(fixedVersion)
+      }
+    })
+    commit(SET_SELECTED_VERSIONS, versionsWithTransmision)
+  },
+  settingObjectPriceByYear({ commit, state }) {
+    const setPrices = state.version.prices
+    const price = setPrices.find(
+      (price) => price.type === state.selectedYear.toString()
+    )
+    commit(SET_OBJECT_PRICE_BY_YEAR, price)
+  },
+  settingSelectedVersion({ commit, state }, slug) {
+    const versionObject = state.modelVersions.find(
+      (version) => version.slug === slug
+    )
+    commit(SET_VERSION, versionObject)
   },
 }
 
 export const mutations = {
   [SET_VERSIONS](state, items) {
     state.modelVersions = items
+  },
+  [SET_VERSION](state, items) {
+    state.version = items
   },
   [SET_MODEL](state, items) {
     state.modelData = items
@@ -114,5 +200,23 @@ export const mutations = {
   },
   [SET_TRANSMISION](state, items) {
     state.transmision = items
+  },
+  [SET_VIEWS_BY_VERSION](state, items) {
+    state.viewsByVersion = items
+  },
+  [SET_SELETED_VIEW](state, items) {
+    state.selectedView = items
+  },
+  [SET_OBJECT_PRICE_BY_YEAR](state, items) {
+    state.objectPriceByYear = items
+  },
+  [SET_SELECTED_VERSIONS](state, items) {
+    state.selectedVersions = items
+  },
+  [SET_COLORS](state, items) {
+    state.colors = items
+  },
+  [SET_SELECTED_COLOR](state, items) {
+    state.selectedColor = items
   },
 }

@@ -1,58 +1,63 @@
 <template>
-  <section class="sidebar col-md-4 col-lg-3 col-xl-3 mobVersionFilterDetail">
-    <div class="model-car only-desktop col-12">
-      <p>Modelo</p>
-      <h5>{{ model ? model.name : '' }}</h5>
-    </div>
-    <div class="top-sidebar only-mobile">
-      <p>filtros</p>
-      <a href="#">
-        <img src="../../assets/icons/cancel.svg" alt="" />
-      </a>
-    </div>
-    <div class="filters col-12">
-      <CustomSelect
-        v-model="selectedVersion"
-        :default="defaultVersion(optionsVersions)"
-        :options-value="optionsVersions"
-      />
-      <RadioButtons
-        v-if="years && yearSelected"
-        v-model="selectedRadioButtonYear"
-        :title="titleRadioButtonsYear"
-        :label-name="labelRadioButtonsYear"
-        :options="years"
-        :default-value="yearSelected"
-        :display-mode="'row'"
-      />
-      <RadioButtons
-        v-if="views && viewSelected"
-        v-model="selectedRadioButtonView"
-        :title="titleRadioButtonsView"
-        :label-name="labelRadioButtonsView"
-        :options="views"
-        :default-value="viewSelected"
-      />
-      <RadioButtonColors
-        v-if="colorsOptions && colorSelected"
-        v-model="selectedRadioButtonColor"
-        :title="titleRadioButtonsColor"
-        :label-name="labelRadioButtonsColor"
-        :options="colorsOptions"
-        :default-value="colorSelected"
-        :display-mode="'row'"
-      />
-
-      <div class="prices only-desktop">
-        <p>precio</p>
-        <div>
-          <span>US$ {{ objectPrices ? objectPrices.value : '' }}</span
-          >|<span
-            >S/ {{ objectPrices ? objectPrices.convertedValue : '' }}</span
-          >
-        </div>
+  <div class="col-12 np">
+    <section
+      v-if="showFiltroMobile"
+      class="sidebar col-md-4 col-lg-3 col-xl-3"
+      :class="showFiltroMobile ? 'sideBarMobile' : ''"
+    >
+      <div class="model-car only-desktop col-12">
+        <p>Modelo</p>
+        <h5>{{ model ? model.name : '' }}</h5>
       </div>
-      <!-- <div id="credit-calculate-des" class="credit-calculate hiddenItem">
+      <div class="top-sidebar only-mobile">
+        <p>filtros</p>
+        <a href="#" @click="toggleFiltros">
+          <img src="../../assets/icons/cancel.svg" alt="" />
+        </a>
+      </div>
+      <div class="filters col-12 mobVersionFilter">
+        <CustomSelect
+          v-model="selectedVersion"
+          :default="defaultVersion(optionsVersions)"
+          :options-value="optionsVersions"
+        />
+        <RadioButtons
+          v-if="years && yearSelected"
+          v-model="selectedRadioButtonYear"
+          :title="titleRadioButtonsYear"
+          :label-name="labelRadioButtonsYear"
+          :options="years"
+          :default-value="yearSelected"
+          :display-mode="'row'"
+        />
+        <RadioButtons
+          v-if="views && viewSelected"
+          v-model="selectedRadioButtonView"
+          :title="titleRadioButtonsView"
+          :label-name="labelRadioButtonsView"
+          :options="views"
+          :default-value="viewSelected"
+        />
+        <RadioButtonColors
+          v-if="colorsOptions && colorSelected"
+          v-model="selectedRadioButtonColor"
+          :title="titleRadioButtonsColor"
+          :label-name="labelRadioButtonsColor"
+          :options="colorsOptions"
+          :default-value="colorSelected"
+          :display-mode="'row'"
+        />
+
+        <div class="prices only-desktop">
+          <p>precio</p>
+          <div>
+            <span>US$ {{ objectPrices ? objectPrices.value : '' }}</span
+            >|<span
+              >S/ {{ objectPrices ? objectPrices.convertedValue : '' }}</span
+            >
+          </div>
+        </div>
+        <!-- <div id="credit-calculate-des" class="credit-calculate hiddenItem">
         <div class="btn-calculate">
           Calcular credito
           <img id="img-plus" src="../../assets/icons/plus.svg" alt="" /><img
@@ -138,17 +143,27 @@
           <button>quiero este</button>
         </div>
       </div> -->
-      <div class="buttons only-desktop">
-        <button class="btn-blackgray" @click="cotizacionMazda">
-          cotiza ahora
-        </button>
-        <button v-if="!disabledReserva" class="btn-red" @click="actionReserva">
-          reservar
+        <div class="buttons only-desktop">
+          <button class="btn-blackgray" @click="cotizacionMazda">
+            cotiza ahora
+          </button>
+          <button
+            v-if="!disabledReserva"
+            class="btn-red"
+            @click="actionReserva"
+          >
+            reservar
+          </button>
+        </div>
+        <button class="btn-blackgray" @click="toggleFiltros">
+          añadir filtros
         </button>
       </div>
-      <button class="btn-blackgray new-only-mobile">añadir filtros</button>
-    </div>
-  </section>
+    </section>
+    <button class="btn-blackgray new-only-mobile" @click="toggleFiltros">
+      Filtros
+    </button>
+  </div>
 </template>
 
 <script>
@@ -157,7 +172,7 @@ import CustomSelect from '~/components/common/Select'
 import RadioButtons from '~/components/common/RadioButtons'
 import RadioButtonColors from '~/components/common/RadioButtonColors'
 export default {
-  name: 'FilterDetailComponent',
+  name: 'FilterDetailMobileComponent',
   components: { CustomSelect, RadioButtons, RadioButtonColors },
   data() {
     return {
@@ -173,6 +188,7 @@ export default {
       selectedRadioButtonColor: null,
       titleRadioButtonsColor: 'COLORES',
       labelRadioButtonsColor: 'RadioButtonsColor',
+      showFiltroMobile: false,
     }
   },
   computed: {
@@ -286,6 +302,14 @@ export default {
     actionReserva() {
       window.location.href = this.setLinkReserva
     },
+    toggleFiltros() {
+      this.showFiltroMobile = !this.showFiltroMobile
+      if (this.showFiltroMobile) {
+        document.body.style.overflow = 'hidden'
+      } else {
+        document.body.style.overflow = 'initial'
+      }
+    },
     ...mapActions({
       setYears: 'detailcar/settingYearData',
       setYear: 'detailcar/settingSelectedYear',
@@ -299,4 +323,28 @@ export default {
 }
 </script>
 
-<style></style>
+<style>
+.sideBarMobile {
+  position: fixed !important;
+  width: 100% !important;
+  min-height: 100vh;
+  z-index: 999;
+  display: block !important;
+  top: 0;
+  left: 0;
+}
+.btn-blackgray {
+  background-color: #1b1b1b;
+  border-radius: 5px;
+  filter: drop-shadow(0px 2px 2px rgba(0, 0, 0, 0.5));
+  height: 56px;
+  width: 100%;
+  border: none;
+  outline: none;
+  font-size: 14px;
+  letter-spacing: 1px;
+  color: #d0d0d0;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+</style>
