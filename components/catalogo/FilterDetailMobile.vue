@@ -1,9 +1,22 @@
 <template>
   <div class="col-12 np">
     <section
-      v-if="showFiltroMobile"
+      v-show="showFiltroMobile"
       class="sidebar col-md-4 col-lg-3 col-xl-3"
-      :class="showFiltroMobile ? 'sideBarMobile' : ''"
+      :style="
+        showFiltroMobile
+          ? {
+              position: 'fixed !important',
+              width: '100% !important',
+              height: '100vh',
+              zIndex: 999,
+              display: ' block !important',
+              top: 0,
+              left: 0,
+              overflow: 'auto',
+            }
+          : {}
+      "
     >
       <div class="model-car only-desktop col-12">
         <p>Modelo</p>
@@ -22,27 +35,27 @@
           :options-value="optionsVersions"
         />
         <RadioButtons
-          v-if="years && yearSelected"
-          v-model="selectedRadioButtonYear"
-          :title="titleRadioButtonsYear"
-          :label-name="labelRadioButtonsYear"
+          v-show="years && yearSelected"
+          v-model="selectedRadioButtonYearMobile"
+          :title="titleRadioButtonsYearMobile"
+          :label-name="labelRadioButtonsYearMobile"
           :options="years"
           :default-value="yearSelected"
           :display-mode="'row'"
         />
         <RadioButtons
-          v-if="views && viewSelected"
-          v-model="selectedRadioButtonView"
-          :title="titleRadioButtonsView"
-          :label-name="labelRadioButtonsView"
+          v-show="views && viewSelected"
+          v-model="selectedRadioButtonViewMobile"
+          :title="titleRadioButtonsViewMobile"
+          :label-name="labelRadioButtonsViewMobile"
           :options="views"
           :default-value="viewSelected"
         />
         <RadioButtonColors
-          v-if="colorsOptions && colorSelected"
-          v-model="selectedRadioButtonColor"
-          :title="titleRadioButtonsColor"
-          :label-name="labelRadioButtonsColor"
+          v-show="colorsOptions && colorSelected"
+          v-model="selectedRadioButtonColorMobile"
+          :title="titleRadioButtonsColorMobile"
+          :label-name="labelRadioButtonsColorMobile"
           :options="colorsOptions"
           :default-value="colorSelected"
           :display-mode="'row'"
@@ -156,7 +169,7 @@
           </button>
         </div>
         <button class="btn-blackgray" @click="toggleFiltros">
-          añadir filtros
+          AÑADIR FILTROS
         </button>
       </div>
     </section>
@@ -177,17 +190,17 @@ export default {
   data() {
     return {
       selectedVersion: null,
-      selectedRadioButtonYear: null,
-      titleRadioButtonsYear: 'AÑO',
-      labelRadioButtonsYear: 'RadioButtonsYear',
-      selectedRadioButtonView: null,
-      titleRadioButtonsView: 'VISTAS',
-      labelRadioButtonsView: 'RadioButtonsView',
+      selectedRadioButtonYearMobile: null,
+      titleRadioButtonsYearMobile: 'AÑO',
+      labelRadioButtonsYearMobile: 'RadioButtonsYearMobile',
+      selectedRadioButtonViewMobile: null,
+      titleRadioButtonsViewMobile: 'VISTAS',
+      labelRadioButtonsViewMobile: 'RadioButtonsViewMobile',
       setLinkReserva: '',
       disabledReserva: false,
-      selectedRadioButtonColor: null,
-      titleRadioButtonsColor: 'COLORES',
-      labelRadioButtonsColor: 'RadioButtonsColor',
+      selectedRadioButtonColorMobile: null,
+      titleRadioButtonsColorMobile: 'COLORES',
+      labelRadioButtonsColorMobile: 'RadioButtonsColorMobile',
       showFiltroMobile: false,
     }
   },
@@ -212,7 +225,7 @@ export default {
       this.setVersion(newSlug)
       this.reservaMazda()
     },
-    selectedRadioButtonYear(year) {
+    selectedRadioButtonYearMobile(year) {
       this.setYear(year)
       this.reservaMazda()
     },
@@ -220,12 +233,12 @@ export default {
       this.setYear(year)
       this.setObjectPrice()
     },
-    selectedRadioButtonView(view) {
+    selectedRadioButtonViewMobile(view) {
       // CREAR FUNCION PARA SETEAR IMAGENES EN LA VISTA
       this.setView(view)
       this.setColorCaption(view)
     },
-    selectedRadioButtonColor(color) {
+    selectedRadioButtonColorMobile(color) {
       this.setImagesByColor(color)
     },
   },
@@ -294,6 +307,7 @@ export default {
         const link = data[0].prices[0].link || ''
         if (link) {
           this.setLinkReserva = link
+          this.disabledReserva = false
         } else {
           this.disabledReserva = true
         }

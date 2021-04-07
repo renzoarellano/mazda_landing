@@ -1,6 +1,6 @@
 <template>
   <div class="col-12 np">
-    <div v-if="showModal" class="col-12 filterPadMobile">
+    <div v-show="showModal" class="col-12 filterPadMobile">
       <div class="filterContainer col-12 filterContainerMobile">
         <div class="col-12 topTitleFilterMobile">
           <h2>FILTROS</h2>
@@ -48,7 +48,7 @@
           :value="selectedRadioButtonType"
         />
         <button class="buttonFilterAction" @click="applyFilter()">
-          Aplicar Filtros
+          AÑADIR FILTROS
         </button>
       </div>
     </div>
@@ -165,7 +165,7 @@ export default {
 .filterContainerMobile {
   padding-top: 20px;
   overflow: auto;
-  min-height: 500px;
+  min-height: 100vh;
 }
 .filterPadMobile {
   top: 0;

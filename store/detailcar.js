@@ -143,7 +143,12 @@ export const actions = {
     }
   },
   settingImagesByColor({ commit, state }, color) {
+    console.log(
+      '🚀 ~ file: detailcar.js ~ line 146 ~ settingImagesByColor ~ color',
+      color
+    )
     if (color) {
+      console.log('state.version', state.version)
       const imgsDetail = state.version.campaingImgs[state.selectedView]
       const images = imgsDetail.filter((view) => view.color === color)
       commit(SET_DETAIL_IMAGES, images ? images[0].imgs : [])
@@ -162,7 +167,9 @@ export const actions = {
         versionsWithTransmision.push(fixedVersion)
       }
     })
-    commit(SET_SELECTED_VERSIONS, versionsWithTransmision)
+    if (versionsWithTransmision.length) {
+      commit(SET_SELECTED_VERSIONS, versionsWithTransmision)
+    }
   },
   settingObjectPriceByYear({ commit, state }) {
     const setPrices = state.version.prices

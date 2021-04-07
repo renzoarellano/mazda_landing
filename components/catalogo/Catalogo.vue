@@ -7,7 +7,7 @@
         <TitleCatalog />
       </div>
       <div class="col-5 d-block d-sm-none">
-        <FilterMobileComponent v-if="models" :models="models" />
+        <FilterMobileComponent v-show="models" :models="models" />
       </div>
       <div class="col-12 col-md-6 col-lg-4">
         <CustomSelect
