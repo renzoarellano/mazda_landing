@@ -19,7 +19,7 @@
         :value="selectedRadioButtonType"
       />
       <button class="buttonFilterAction" @click="applyFilter()">
-        Aplicar Filtros
+        AÑADIR FILTROS
       </button>
     </div>
   </div>

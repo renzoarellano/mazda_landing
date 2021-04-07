@@ -48,7 +48,7 @@
           :value="selectedRadioButtonType"
         />
         <button class="buttonFilterAction" @click="applyFilter()">
-          Aplicar Filtros
+          AÑADIR FILTROS
         </button>
       </div>
     </div>
@@ -165,7 +165,7 @@ export default {
 .filterContainerMobile {
   padding-top: 20px;
   overflow: auto;
-  min-height: 500px;
+  min-height: 100vh;
 }
 .filterPadMobile {
   top: 0;

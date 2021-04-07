@@ -146,7 +146,7 @@
           reservar
         </button>
       </div>
-      <button class="btn-blackgray new-only-mobile">añadir filtros</button>
+      <button class="btn-blackgray new-only-mobile">AÑADIR FILTROS</button>
     </div>
   </section>
 </template>
@@ -210,10 +210,6 @@ export default {
       this.setColorCaption(view)
     },
     selectedRadioButtonColor(color) {
-      console.log(
-        '🚀 ~ file: FilterDetail.vue ~ line 213 ~ selectedRadioButtonColor ~ color',
-        color
-      )
       this.setImagesByColor(color)
     },
   },
@@ -282,6 +278,7 @@ export default {
         const link = data[0].prices[0].link || ''
         if (link) {
           this.setLinkReserva = link
+          this.disabledReserva = false
         } else {
           this.disabledReserva = true
         }

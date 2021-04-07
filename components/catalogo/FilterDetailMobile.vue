@@ -8,11 +8,12 @@
           ? {
               position: 'fixed !important',
               width: '100% !important',
-              minHeight: '100vh',
+              height: '100vh',
               zIndex: 999,
               display: ' block !important',
               top: 0,
               left: 0,
+              overflow: 'auto',
             }
           : {}
       "
@@ -168,7 +169,7 @@
           </button>
         </div>
         <button class="btn-blackgray" @click="toggleFiltros">
-          añadir filtros
+          AÑADIR FILTROS
         </button>
       </div>
     </section>
@@ -189,9 +190,9 @@ export default {
   data() {
     return {
       selectedVersion: null,
-      selectedRadioButtonMobile: null,
-      titleRadioButtonsMobile: 'AÑO',
-      labelRadioButtonsMobile: 'RadioButtonsYearMobile',
+      selectedRadioButtonYearMobile: null,
+      titleRadioButtonsYearMobile: 'AÑO',
+      labelRadioButtonsYearMobile: 'RadioButtonsYearMobile',
       selectedRadioButtonViewMobile: null,
       titleRadioButtonsViewMobile: 'VISTAS',
       labelRadioButtonsViewMobile: 'RadioButtonsViewMobile',
@@ -224,7 +225,7 @@ export default {
       this.setVersion(newSlug)
       this.reservaMazda()
     },
-    selectedRadioButtonYear(year) {
+    selectedRadioButtonYearMobile(year) {
       this.setYear(year)
       this.reservaMazda()
     },
@@ -232,12 +233,12 @@ export default {
       this.setYear(year)
       this.setObjectPrice()
     },
-    selectedRadioButtonView(view) {
+    selectedRadioButtonViewMobile(view) {
       // CREAR FUNCION PARA SETEAR IMAGENES EN LA VISTA
       this.setView(view)
       this.setColorCaption(view)
     },
-    selectedRadioButtonColor(color) {
+    selectedRadioButtonColorMobile(color) {
       this.setImagesByColor(color)
     },
   },
@@ -306,6 +307,7 @@ export default {
         const link = data[0].prices[0].link || ''
         if (link) {
           this.setLinkReserva = link
+          this.disabledReserva = false
         } else {
           this.disabledReserva = true
         }

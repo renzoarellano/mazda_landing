@@ -161,20 +161,19 @@ export const actions = {
       newArrayData = filterPriceArray
     }
     const filterYearArray = []
+    console.log(filterView.year.toString())
     if (filterView.year) {
       newArrayData.forEach((car) => {
-        let pushToArray = false
-        car.defaultVersion.prices.forEach((price) => {
-          if (price.name === filterView.year.toString()) {
-            pushToArray = true
-          }
-          if (pushToArray) {
-            filterYearArray.push(car)
-          }
-        })
+        const yearFounded = car.defaultVersion.prices.find(
+          (price) => price.name === filterView.year.toString()
+        )
+        if (yearFounded) {
+          filterYearArray.push(car)
+        }
       })
       newArrayData = filterYearArray
     }
+    console.log('fase3', newArrayData)
     commit(SET_CARS, newArrayData)
   },
   orderByCars({ commit, state }, order) {

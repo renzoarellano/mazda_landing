@@ -505,15 +505,19 @@ export default {
   width: 100%;
 }
 .content .detail-car {
-  margin-top: 32px;
+  margin-top: 25px;
   display: flex;
   justify-content: space-between;
   flex-direction: column;
   margin-bottom: 50px;
 }
+.content .detail-car .description {
+  font-size: 16px;
+}
 .content .description {
   margin-bottom: 15px;
 }
+
 .content .description p {
   font-size: 12px;
   letter-spacing: 1px;
@@ -571,7 +575,7 @@ export default {
     flex-direction: row;
   } */
   .content {
-    padding: 42px 32px;
+    padding: 45px 100px;
   }
   .content .tabs-type {
     margin-top: 40px;
@@ -590,6 +594,15 @@ export default {
   }
   .content button {
     width: 278px;
+  }
+}
+.prices {
+  margin-top: 20px;
+}
+
+@media (max-width: 767px) {
+  .description {
+    text-align: center;
   }
 }
 </style>
