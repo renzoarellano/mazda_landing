@@ -46,10 +46,8 @@
       <div class="prices only-desktop">
         <p>precio</p>
         <div>
-          <span>US$ {{ objectPrices ? objectPrices.value : '' }}</span
-          >|<span
-            >S/ {{ objectPrices ? objectPrices.convertedValue : '' }}</span
-          >
+          <span>{{ objectPrices.value | USD }}</span
+          >|<span>{{ objectPrices.convertedValue | PE }}</span>
         </div>
       </div>
       <!-- <div id="credit-calculate-des" class="credit-calculate hiddenItem">
