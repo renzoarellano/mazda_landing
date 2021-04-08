@@ -30,22 +30,31 @@
             </g>
           </svg>
         </div>
-        <CustomSelect v-model="selectedModel" :options-value="optionsModels" />
-        <CustomSelect v-model="selectedPrice" :options-value="optionsPrices" />
+        <CustomSelect
+          v-model="selectedModelMobile"
+          :options-value="optionsModelsMobile"
+          :default="selectedModelMobile"
+        />
+        <CustomSelect
+          v-model="selectedPriceMobile"
+          :options-value="optionsPricesMobile"
+        />
         <RadioButtons
-          v-model="selectedRadioButtonYear"
-          :title="titleRadioButtonsYear"
-          :label-name="labelRadioButtonsYear"
-          :options="optionsRadioButtonsYear"
-          :value="selectedRadioButtonYear"
+          v-model="selectedRadioButtonYearMobile"
+          :title="titleRadioButtonsYearMobile"
+          :label-name="labelRadioButtonsYearMobile"
+          :options="optionsRadioButtonsYearMobile"
+          :value="selectedRadioButtonYearMobile"
+          :default-value="selectedRadioButtonYearMobile"
           :display-mode="'row'"
         />
         <RadioButtons
-          v-model="selectedRadioButtonType"
-          :title="titleRadioButtonsType"
-          :label-name="labelRadioButtonsType"
-          :options="optionsRadioButtonsType"
-          :value="selectedRadioButtonType"
+          v-model="selectedRadioButtonTypeMobile"
+          :title="titleRadioButtonsTypeMobile"
+          :label-name="labelRadioButtonsTypeMobile"
+          :options="optionsRadioButtonsTypeMobile"
+          :default-value="selectedRadioButtonTypeMobile"
+          :value="selectedRadioButtonTypeMobile"
         />
         <button class="buttonFilterAction" @click="applyFilter()">
           AÑADIR FILTROS
@@ -74,10 +83,10 @@ export default {
   data() {
     return {
       showModal: false,
-      selectedModel: null,
-      optionsModels: this.updateModelsData(this.models),
-      selectedPrice: null,
-      optionsPrices: [
+      selectedModelMobile: this.$route.query.model || null,
+      optionsModelsMobile: this.updateModelsData(this.models),
+      selectedPriceMobile: this.gettingPrice(this.$route.query.price),
+      optionsPricesMobile: [
         {
           value: null,
           text: 'RANGO DE PRECIOS',
@@ -95,33 +104,52 @@ export default {
           text: 'US$ 30,000 - US$ 40,000',
         },
       ],
-      selectedRadioButtonYear: null,
-      titleRadioButtonsYear: 'AÑO',
-      labelRadioButtonsYear: 'RadioButtonsYear',
-      optionsRadioButtonsYear: {
+      selectedRadioButtonYearMobile: this.$route.query.year || null,
+      titleRadioButtonsYearMobile: 'AÑO',
+      labelRadioButtonsYearMobile: 'RadioButtonsYear',
+      optionsRadioButtonsYearMobile: {
         2021: 2021,
         2022: 2022,
       },
-      selectedRadioButtonType: null,
-      titleRadioButtonsType: 'CATEGORÍA',
-      labelRadioButtonsType: 'RadioButtonsType',
-      optionsRadioButtonsType: {
+      selectedRadioButtonTypeMobile: this.$route.query.category || null,
+      titleRadioButtonsTypeMobile: 'CATEGORÍA',
+      labelRadioButtonsTypeMobile: 'RadioButtonsType',
+      optionsRadioButtonsTypeMobile: {
         SUV: 'SUV',
         HATCHBACK: 'Hatchback',
         SEDÁN: 'Sedán',
       },
     }
   },
+  async mounted() {
+    const { query } = await this.$route
+    const { model, price, category, year } = query
+    if (model || price || category || year) {
+      await this.applyFilter()
+    }
+  },
   methods: {
+    gettingPrice(price) {
+      if (price) return price
+      return null
+    },
     applyFilter() {
+      this.$router.push({
+        path: this.$route.path,
+        query: {},
+      })
       const filterOptions = {
-        model: this.selectedModel,
-        price: this.selectedPrice,
-        year: this.selectedRadioButtonYear,
-        category: this.selectedRadioButtonType,
+        model: this.selectedModelMobile,
+        price: this.selectedPriceMobile,
+        year: this.selectedRadioButtonYearMobile,
+        category: this.selectedRadioButtonTypeMobile,
       }
-      this.toggleFiltros()
       this.filtrar(filterOptions)
+      this.$router.push({
+        path: this.$route.path,
+        query: filterOptions,
+      })
+      this.showModal = false
     },
     updateModelsData(modelsMazda) {
       let newOptions = [

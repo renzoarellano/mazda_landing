@@ -33,8 +33,8 @@
             <div class="cardAutoCatalog__textos">
               <h3>{{ model.name }}</h3>
               <div class="cardAutoCatalog__textos__bottom">
-                <p>desde US$ {{ model.defaultVersion.prices[0].value }}</p>
-                <p>S/ {{ model.defaultVersion.prices[0].convertedValue }}</p>
+                <p>desde {{ model.defaultVersion.prices[0].value | USD }}</p>
+                <p>{{ model.defaultVersion.prices[0].convertedValue | PE }}</p>
               </div>
             </div>
           </a>

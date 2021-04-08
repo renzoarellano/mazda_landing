@@ -32,8 +32,8 @@
     <div class="prices only-mobile">
       <p>{{ model.name }}</p>
       <div>
-        <span>US$ {{ objectPrices ? objectPrices.value : '' }}</span
-        >|<span>S/ {{ objectPrices ? objectPrices.convertedValue : '' }}</span>
+        <span>{{ objectPrices.value | USD }}</span
+        >|<span>{{ objectPrices.convertedValue | PE }}</span>
       </div>
     </div>
     <div class="detail-car">

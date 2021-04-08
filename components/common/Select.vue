@@ -7,6 +7,11 @@
   >
     <div class="selectedValue" :class="{ open: open }" @click="open = !open">
       {{ selected ? selected.toUpperCase() : '' }}
+      <img
+        :src="require(`~/assets/images/arrowSelect.png`)"
+        :class="!open ? '' : 'openArrow'"
+        alt="Arrow Select"
+      />
     </div>
     <div
       class="items"

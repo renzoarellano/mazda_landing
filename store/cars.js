@@ -161,7 +161,6 @@ export const actions = {
       newArrayData = filterPriceArray
     }
     const filterYearArray = []
-    console.log(filterView.year.toString())
     if (filterView.year) {
       newArrayData.forEach((car) => {
         const yearFounded = car.defaultVersion.prices.find(
