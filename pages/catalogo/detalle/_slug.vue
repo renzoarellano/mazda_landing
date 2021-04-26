@@ -1,5 +1,5 @@
 <template>
-  <b-container fluid class="">
+  <b-container fluid style="max-width: 1440px">
     <b-row>
       <FilterDetailComponent />
       <CarDetailComponent />

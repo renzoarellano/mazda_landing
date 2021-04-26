@@ -1,5 +1,6 @@
 .catalogoContainer{
   padding: 0;
+  max-width: 1440px;
 }
 .filterContainer{
   background-image: linear-gradient(225deg, $first_filter_color 0%, $second_degrade_color 60%, $third_degrade_color 80%);
