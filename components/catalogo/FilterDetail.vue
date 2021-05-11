@@ -12,6 +12,11 @@
     </div>
     <div class="filters col-12">
       <CustomSelect
+        v-model="selectedTransmision"
+        :default="transmisionSelected"
+        :options-value="transmisionOptions"
+      />
+      <CustomSelect
         v-model="selectedVersion"
         :default="defaultVersion(optionsVersions)"
         :options-value="optionsVersions"
@@ -171,6 +176,7 @@ export default {
       selectedRadioButtonColor: null,
       titleRadioButtonsColor: 'COLORES',
       labelRadioButtonsColor: 'RadioButtonsColor',
+      selectedTransmision: null,
     }
   },
   computed: {
@@ -186,9 +192,14 @@ export default {
       optionsVersions: 'detailcar/selectedVersions',
       colorsOptions: 'detailcar/colors',
       colorSelected: 'detailcar/selectedColor',
+      transmisionOptions: 'detailcar/transmisionList',
+      transmisionSelected: 'detailcar/transmision',
     }),
   },
   watch: {
+    selectedTransmision(transmision) {
+      this.setTransmision(transmision)
+    },
     selectedVersion(newSlug, oldSluf) {
       this.setYears(newSlug)
       this.setVersion(newSlug)
@@ -293,6 +304,7 @@ export default {
       setObjectPrice: 'detailcar/settingObjectPriceByYear',
       setColorCaption: 'detailcar/settingColorCaption',
       setImagesByColor: 'detailcar/settingImagesByColor',
+      setTransmision: 'detailcar/settingTransmision',
     }),
   },
 }

@@ -94,7 +94,7 @@ export default {
     settingData() {
       if (this.default && this.optionsValue) {
         const option = this.optionsValue.find(
-          (option) => option.slug === this.default
+          (option) => option.value === this.default
         )
         this.onChange(option)
       } else {

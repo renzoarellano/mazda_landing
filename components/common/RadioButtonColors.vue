@@ -22,7 +22,7 @@
         />
         <div
           class="checkedRadioButtonBody"
-          :style="{ backgroundColor: val.icono }"
+          :style="{ backgroundColor: val.hexadecimal1 }"
         ></div>
         <span class="checkmarkColors"></span>
       </label>

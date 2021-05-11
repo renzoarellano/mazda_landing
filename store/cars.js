@@ -90,7 +90,7 @@ export const actions = {
   async gettingSlugData({ commit }) {
     try {
       const dataSlugs = await this.$axios.$get(
-        'https://cotizadorderco.com/mazdaCampaign'
+        'https://cotizadorderco.com/mazdaCampaign/getNewModels'
       )
       commit(SET_SLUGS_API, dataSlugs)
     } catch (error) {

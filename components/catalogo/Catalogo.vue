@@ -27,7 +27,7 @@
             class="col-12 col-md-6 col-lg-4 cardAutoCatalog"
           >
             <img
-              :src="`https://cotizadorderco.com/forms/campanaMazda/${model.newImageCatalogo}`"
+              :src="`https://derco-pe-prod.s3.amazonaws.com/catalogomazda/${model.newImageCatalogo}`"
               alt=""
             />
             <div class="cardAutoCatalog__textos">
