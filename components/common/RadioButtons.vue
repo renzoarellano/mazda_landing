@@ -38,9 +38,10 @@ export default {
       type: String,
       default: '',
     },
+    // eslint-disable-next-line vue/require-prop-types
     defaultValue: {
       // selected Radio Button
-      type: Number || String,
+
       default: '' || 0,
     },
     displayMode: {
@@ -70,6 +71,7 @@ export default {
   },
   methods: {
     onChange(val) {
+      console.log('🚀 ~ file: RadioButtons.vue ~ line 73 ~ onChange ~ val', val)
       this.$emit('input', val)
     },
     settingData() {

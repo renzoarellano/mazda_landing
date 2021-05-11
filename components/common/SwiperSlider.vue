@@ -1,11 +1,7 @@
 <template>
   <swiper ref="mySwiper" class="sliderContainer" :options="swiperOptions">
     <swiper-slide v-for="(banner, index) in imgDetail" :key="index">
-      <img
-        class="slideImage"
-        :src="'https://cotizadorderco.com/forms/campanaMazda' + banner"
-        alt="Mazda - Campaña"
-      />
+      <img class="slideImage" :src="banner" alt="Mazda - Campaña" />
     </swiper-slide>
 
     <!--     <div slot="pagination" class="swiper-pagination"></div> -->

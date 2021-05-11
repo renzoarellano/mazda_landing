@@ -2,7 +2,9 @@
 export const SET_CARS = 'SET_CARS'
 export const TOTAL_CARS = 'TOTAL_CARS'
 export const SET_MODELS = 'SET_MODELS'
+export const SET_YEAR = 'SET_YEAR'
 export const SET_YEARS = 'SET_YEARS'
+export const SET_CATEGORY = 'SET_CATEGORY'
 export const SET_CATEGORIES = 'SET_CATEGORIES'
 export const SET_PAGINATION_SEARCH = 'SET_PAGINATION_SEARCH'
 export const ADD_BODY_SEARCH_DATA = 'ADD_BODY_SEARCH_DATA'
@@ -12,7 +14,9 @@ export const state = () => ({
   cars: [],
   totalCars: 0,
   models: [],
+  category: null,
   categories: [], // carClasses
+  year: null,
   years: [],
   paginationSearch: {},
   imagesAPI: [],
@@ -29,7 +33,9 @@ export const state = () => ({
 
 export const getters = {
   models: (state) => state.models,
+  year: (state) => state.year,
   years: (state) => state.years,
+  category: (state) => state.category,
   categories: (state) => state.categories,
   cars: (state) => state.cars,
   imagesAPI: (state) => state.imagesAPI,
@@ -84,7 +90,7 @@ export const actions = {
   async gettingSlugData({ commit }) {
     try {
       const dataSlugs = await this.$axios.$get(
-        'https://cotizadorderco.com/mazdaCampaign'
+        'https://cotizadorderco.com/mazdaCampaign/getNewModels'
       )
       commit(SET_SLUGS_API, dataSlugs)
     } catch (error) {
@@ -112,8 +118,33 @@ export const actions = {
           }
         })
       })
+      /*  console.log('newArrayData', newArrayData) */
+      // Settings Years
+      const newArrayYears = {}
+      newArrayData.forEach((car) => {
+        car.defaultVersion.prices.forEach((price) => {
+          newArrayYears[parseInt(price.type)] = parseInt(price.type)
+        })
+      })
+      /*   console.log('newArrayYears', newArrayYears) */
+      // Setting Categories
+      const newArrayCarClasses = {}
+      newArrayData.forEach((car) => {
+        newArrayCarClasses[
+          car.carClass[0].toUpperCase()
+        ] = car.carClass[0].toUpperCase()
+      })
+      /*  const uniqueCategories = newArrayCarClasses.filter((valor, indice) => {
+        return newArrayCarClasses.indexOf(valor) === indice
+      }) */
+
+      /* console.log('newArrayCarClasses', newArrayCarClasses)
+       */
+      // Results
       commit(SET_MODELS, newArrayData)
       commit(SET_CARS, newArrayData)
+      commit(SET_YEARS, newArrayYears)
+      commit(SET_CATEGORIES, newArrayCarClasses)
     } catch (error) {
       console.log(' error', error)
     }
@@ -172,7 +203,7 @@ export const actions = {
       })
       newArrayData = filterYearArray
     }
-    console.log('fase3', newArrayData)
+    /*  console.log('fase3', newArrayData) */
     commit(SET_CARS, newArrayData)
   },
   orderByCars({ commit, state }, order) {
@@ -212,6 +243,52 @@ export const actions = {
       }
     }
   },
+  filterByModel({ commit, state }, slug) {
+    if (slug) {
+      const filterVersion = state.models.find((model) => model.slug === slug)
+      const newArrayYears = {}
+      filterVersion.defaultVersion.prices.forEach((price) => {
+        newArrayYears[price.type] = parseInt(price.type)
+      })
+
+      /* console.log('newArrayYears', newArrayYears) */
+      // Setting Categories
+      const newArrayCarClasses = {}
+      filterVersion.carClass.forEach((car) => {
+        newArrayCarClasses[car.toUpperCase()] = car.toUpperCase()
+      })
+      /* console.log('newArrayCarClasses', newArrayCarClasses) */
+      /* commit(SET_YEAR, null)
+      commit(SET_CATEGORY, null) */
+      commit(SET_YEARS, newArrayYears)
+      commit(SET_CATEGORIES, newArrayCarClasses)
+    } else {
+      // Settings Years
+      const newArrayYears = {}
+      state.models.forEach((car) => {
+        car.defaultVersion.prices.forEach((price) => {
+          newArrayYears[price.type] = parseInt(price.type)
+        })
+      })
+      /* console.log('newArrayYears', newArrayYears) */
+      // Setting Categories
+      const newArrayCarClasses = {}
+      state.models.forEach((car) => {
+        newArrayCarClasses[
+          car.carClass[0].toUpperCase()
+        ] = car.carClass[0].toUpperCase()
+      })
+
+      commit(SET_YEARS, newArrayYears)
+      commit(SET_CATEGORIES, newArrayCarClasses)
+    }
+  },
+  settingYear({ commit }, year) {
+    commit(SET_YEAR, year)
+  },
+  settingCategory({ commit }, category) {
+    commit(SET_CATEGORY, category)
+  },
 }
 
 export const mutations = {
@@ -230,8 +307,14 @@ export const mutations = {
   [SET_IMAGESAPI](state, data) {
     state.imagesAPI = data
   },
+  [SET_YEAR](state, data) {
+    state.year = data
+  },
   [SET_YEARS](state, data) {
     state.years = data
+  },
+  [SET_CATEGORY](state, items) {
+    state.category = items
   },
   [SET_CATEGORIES](state, items) {
     state.categories = items

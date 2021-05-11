@@ -6,23 +6,27 @@
         :options-value="optionsModels"
         :default="selectedModel"
       />
-      <CustomSelect v-model="selectedPrice" :options-value="optionsPrices" />
+      <CustomSelect
+        v-model="selectedPrice"
+        :options-value="optionsPrices"
+        :absolute="false"
+      />
       <RadioButtons
         v-model="selectedRadioButtonYear"
         :title="titleRadioButtonsYear"
         :label-name="labelRadioButtonsYear"
-        :options="optionsRadioButtonsYear"
-        :value="selectedRadioButtonYear"
-        :default-value="selectedRadioButtonYear"
+        :options="allYears"
+        :value="selectedYear"
+        :default-value="selectedYear"
         :display-mode="'row'"
       />
       <RadioButtons
         v-model="selectedRadioButtonType"
         :title="titleRadioButtonsType"
         :label-name="labelRadioButtonsType"
-        :options="optionsRadioButtonsType"
-        :value="selectedRadioButtonType"
-        :default-value="selectedRadioButtonType"
+        :options="allCategories"
+        :value="selectedCategory"
+        :default-value="selectedCategory"
       />
       <button class="buttonFilterAction" @click="applyFilter()">
         AÑADIR FILTROS
@@ -32,7 +36,7 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex'
+import { mapGetters, mapActions } from 'vuex'
 import CustomSelect from '~/components/common/Select'
 import RadioButtons from '~/components/common/RadioButtons'
 export default {
@@ -86,11 +90,40 @@ export default {
       },
     }
   },
+  computed: {
+    ...mapGetters({
+      selectedYear: 'cars/year',
+      allYears: 'cars/years',
+      selectedCategory: 'cars/category',
+      allCategories: 'cars/categories',
+    }),
+  },
+  watch: {
+    selectedModel(model) {
+      this.filterByCar(model)
+      this.selectedRadioButtonYear = null
+      this.selectedRadioButtonType = null
+      this.setYear(null)
+      this.setCategory(null)
+      this.applyFilter()
+    },
+    selectedRadioButtonYear(year) {
+      this.setYear(year)
+      this.applyFilter()
+    },
+    selectedRadioButtonType(category) {
+      this.setCategory(category)
+      this.applyFilter()
+    },
+  },
   async mounted() {
     const { query } = await this.$route
     const { model, price, category, year } = query
     if (model || price || category || year) {
       await this.applyFilter()
+
+      await this.setYear(year)
+      await this.setCategory(category)
     }
   },
   methods: {
@@ -99,6 +132,7 @@ export default {
       return null
     },
     applyFilter() {
+      console.log('carga')
       this.$router.push({
         path: this.$route.path,
         query: {},
@@ -114,13 +148,23 @@ export default {
         path: this.$route.path,
         query: filterOptions,
       })
-      this.scrollTop()
+      /*  const str = Object.keys(filterOptions)
+        .map(function (key) {
+          if (filterOptions[key] != null) {
+            return key + '=' + filterOptions[key]
+          } else {
+            return key
+          }
+        })
+        .join('&')
+      history.pushState(null, 'Catalogo Mazda', '/catalogo' + '?' + str) */
+      /* this.scrollTop() */
     },
     updateModelsData(modelsMazda) {
       let newOptions = [
         {
           value: null,
-          text: 'MODELOS',
+          text: 'TODOS LOS MODELOS',
         },
       ]
       if (modelsMazda) {
@@ -144,6 +188,9 @@ export default {
     },
     ...mapActions({
       filtrar: 'cars/filterCars',
+      setYear: 'cars/settingYear',
+      setCategory: 'cars/settingCategory',
+      filterByCar: 'cars/filterByModel',
     }),
   },
 }
@@ -153,6 +200,11 @@ export default {
 .filterPad {
   padding-left: 0px;
   position: fixed;
+}
+@media (min-width: 1200px) {
+  .filterPad {
+    max-width: 345px;
+  }
 }
 @media (max-width: 767px) {
   .filterPad {

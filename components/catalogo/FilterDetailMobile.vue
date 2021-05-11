@@ -30,6 +30,11 @@
       </div>
       <div class="filters col-12 mobVersionFilter">
         <CustomSelect
+          v-model="selectedTransmisionMobile"
+          :default="transmisionSelectedMobile"
+          :options-value="transmisionOptionsMobile"
+        />
+        <CustomSelect
           v-model="selectedVersion"
           :default="defaultVersion(optionsVersions)"
           :options-value="optionsVersions"
@@ -202,6 +207,7 @@ export default {
       titleRadioButtonsColorMobile: 'COLORES',
       labelRadioButtonsColorMobile: 'RadioButtonsColorMobile',
       showFiltroMobile: false,
+      selectedTransmisionMobile: null,
     }
   },
   computed: {
@@ -217,9 +223,14 @@ export default {
       optionsVersions: 'detailcar/selectedVersions',
       colorsOptions: 'detailcar/colors',
       colorSelected: 'detailcar/selectedColor',
+      transmisionOptionsMobile: 'detailcar/transmisionList',
+      transmisionSelectedMobile: 'detailcar/transmision',
     }),
   },
   watch: {
+    selectedTransmisionMobile(transmision) {
+      this.setTransmision(transmision)
+    },
     selectedVersion(newSlug, oldSluf) {
       this.setYears(newSlug)
       this.setVersion(newSlug)
@@ -332,6 +343,7 @@ export default {
       setObjectPrice: 'detailcar/settingObjectPriceByYear',
       setColorCaption: 'detailcar/settingColorCaption',
       setImagesByColor: 'detailcar/settingImagesByColor',
+      setTransmision: 'detailcar/settingTransmision',
     }),
   },
 }

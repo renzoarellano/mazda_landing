@@ -1,11 +1,16 @@
 <template>
   <section class="content col-12 col-md-8 offset-md-4 col-lg-9 offset-lg-3">
+    <div class="btn-back only-mobile backCatalogMobile">
+      <nuxt-link to="/catalogo">
+        <img src="../../assets/icons/next.svg" alt="" /> volver al catálogo
+      </nuxt-link>
+    </div>
     <div class="model-car new-only-mobile-flex row">
-      <div class="col-8">
+      <div class="col-7">
         <p>Modelo</p>
         <h5>{{ model.name }}</h5>
       </div>
-      <div class="col-4">
+      <div class="col-5">
         <FilterDetailMobileComponent />
       </div>
     </div>
@@ -14,7 +19,7 @@
         <img src="../../assets/icons/next.svg" alt="" /> volver al catálogo
       </nuxt-link>
     </div>
-    <ul class="tabs-type">
+    <!-- <ul class="tabs-type">
       <li
         :class="stateTransmision == 'mecanico' ? 'active' : ''"
         @click="setTransmision('mecanico')"
@@ -27,7 +32,18 @@
       >
         automático
       </li>
-    </ul>
+    </ul> -->
+
+    <div class="only-mobile-detail">
+      <CustomSelect
+        v-if="viewsDetail && viewDetailSelected"
+        v-model="selectedDetailView"
+        :default="viewDetailSelected"
+        :options-value="formateDetailView(viewsDetail)"
+        :absolute="false"
+      />
+    </div>
+
     <Carrousel />
     <div class="prices only-mobile">
       <p>{{ model.name }}</p>
@@ -51,7 +67,7 @@
         >
           reservar
         </button>
-        <button @click="openBrochure">descargar brochure</button>
+        <button @click="openBrochure">Descargar ficha técnica</button>
       </div>
     </div>
     <!-- <div id="credit-calculate-mob" class="credit-calculate hiddenItem">
@@ -147,14 +163,16 @@
 <script>
 import { mapGetters, mapActions } from 'vuex'
 import Carrousel from '~/components/common/SwiperSlider'
+import CustomSelect from '~/components/common/Select'
 import FilterDetailMobileComponent from '~/components/catalogo/FilterDetailMobile'
 export default {
   name: 'CarDetailComponent',
-  components: { Carrousel, FilterDetailMobileComponent },
+  components: { Carrousel, FilterDetailMobileComponent, CustomSelect },
   props: {},
   data() {
     return {
       disabledReserva: false,
+      selectedDetailView: null,
     }
   },
   computed: {
@@ -163,15 +181,35 @@ export default {
       model: 'detailcar/modelData',
       years: 'detailcar/yearsByVersion',
       yearSelected: 'detailcar/selectedYear',
-      views: 'detailcar/viewsByVersion',
-      viewSelected: 'detailcar/selectedView',
+      viewsDetail: 'detailcar/viewsByVersion',
+      viewDetailSelected: 'detailcar/selectedView',
       stateVersion: 'detailcar/version',
       stateTransmision: 'detailcar/transmision',
       objectPrices: 'detailcar/objectPriceByYear',
     }),
   },
-  async mounted() {
-    if (this.stateVersion && this.yearSelected) {
+  watch: {
+    stateVersion(value) {
+      this.reservaMazda()
+    },
+    selectedDetailView(view) {
+      this.setViewDetail(view)
+      this.setColorCaptionDetail(view)
+    },
+  },
+
+  methods: {
+    openBrochure() {
+      window.open(
+        this.model.specsSheetUrl,
+        '_blank' // <- This is what makes it open in a new window.
+      )
+    },
+    cotizacionMazda() {
+      const URL = `https://www.mazda.pe/cotizacion?id=${this.stateVersion.id}&year=${this.yearSelected}`
+      window.location.href = URL
+    },
+    async reservaMazda() {
       const body = [
         {
           sap: this.stateVersion.code,
@@ -186,28 +224,32 @@ export default {
         const link = data[0].prices[0].link || ''
         if (link) {
           this.setLinkReserva = link
+          this.disabledReserva = false
         } else {
           this.disabledReserva = true
         }
       }
-    }
-  },
-  methods: {
-    openBrochure() {
-      window.open(
-        this.model.specsSheetUrl,
-        '_blank' // <- This is what makes it open in a new window.
-      )
-    },
-    cotizacionMazda() {
-      const URL = `https://www.mazda.pe/cotizacion?id=${this.stateVersion.id}&year=${this.yearSelected}`
-      window.location.href = URL
     },
     actionReserva() {
       window.location.href = this.setLinkReserva
     },
+    formateDetailView(options) {
+      const keysFromObject = Object.keys(options)
+      const arrayOptions = []
+      keysFromObject.forEach((key) => {
+        const fixedObject = {
+          value: key,
+          text: key.toUpperCase(),
+        }
+        arrayOptions.push(fixedObject)
+      })
+      console.log('arrayOptions', arrayOptions)
+      return arrayOptions
+    },
     ...mapActions({
-      setTransmision: 'detailcar/settingTransmision',
+      setViewDetail: 'detailcar/settingSelectedView',
+      setColorCaptionDetail: 'detailcar/settingColorCaption',
+      /* setTransmision: 'detailcar/settingTransmision', */
     }),
   },
 }
@@ -373,7 +415,7 @@ export default {
   cursor: pointer;
 }
 .content .detail-car button.btn-blackgray {
-  background-color: #242424;
+  background-color: #282828;
   margin-bottom: 15px;
   padding: 20px 40px;
   font-family: 'mazda_regular';
@@ -531,7 +573,8 @@ export default {
   min-width: 250px;
   height: 56px;
   text-align: center;
-  background-color: black;
+  background-color: #000000;
+  filter: drop-shadow(0px 2px 2px rgba(0, 0, 0, 0.5));
   font-size: 14px;
   letter-spacing: 1px;
   color: #ffffff;
@@ -603,6 +646,15 @@ export default {
 @media (max-width: 767px) {
   .description {
     text-align: center;
+  }
+}
+
+.backCatalogMobile {
+  margin-top: 25px;
+}
+@media (min-width: 768px) {
+  .only-mobile-detail {
+    display: none;
   }
 }
 </style>

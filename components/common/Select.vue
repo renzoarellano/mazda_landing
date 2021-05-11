@@ -5,18 +5,22 @@
     :tabindex="tabindex"
     @blur="open = false"
   >
-    <div class="selectedValue" :class="{ open: open }" @click="open = !open">
+    <div class="selectedValue" @click="open = !open">
       {{ selected ? selected.toUpperCase() : '' }}
       <img
-        :src="require(`~/assets/images/arrowSelect.png`)"
+        :src="require(`~/assets/images/down-arrow.png`)"
         :class="!open ? '' : 'openArrow'"
         alt="Arrow Select"
       />
     </div>
+    <div :class="{ open: open }"></div>
     <div
       class="items"
       :style="customColor != '' ? `background-color:${customColor}` : ''"
-      :class="{ selectHide: !open }"
+      :class="[
+        !open ? 'selectHide' : '',
+        !absolute ? 'desplegableRelative' : '',
+      ]"
     >
       <div
         v-for="(option, index) in options"
@@ -56,6 +60,11 @@ export default {
       required: false,
       default: '',
     },
+    absolute: {
+      type: Boolean,
+      required: false,
+      default: true,
+    },
   },
   data() {
     return {
@@ -85,7 +94,7 @@ export default {
     settingData() {
       if (this.default && this.optionsValue) {
         const option = this.optionsValue.find(
-          (option) => option.slug === this.default
+          (option) => option.value === this.default
         )
         this.onChange(option)
       } else {

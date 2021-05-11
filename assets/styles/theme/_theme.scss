@@ -1,5 +1,6 @@
 .catalogoContainer{
   padding: 0;
+  max-width: 1440px;
 }
 .filterContainer{
   background-image: linear-gradient(225deg, $first_filter_color 0%, $second_degrade_color 60%, $third_degrade_color 80%);
@@ -10,6 +11,13 @@
 @media(min-width: 768px){
   .filterContainer{
     padding: 50px 18px;
+  }
+}
+@media (max-width: 991px) {
+  .filterContainer{
+    overflow-y: auto;
+    max-height: 550px;
+
   }
 }
 
@@ -95,6 +103,14 @@
     z-index: 1;
   }
 }
+@media (min-width: 768px) {
+  .sidebar{
+    max-height: 600px;
+    padding-bottom: 80px;
+
+  }
+}
+
 
 .model-car {
   margin-bottom: 32px;
@@ -327,6 +343,7 @@
 
   .buttons {
     margin-top: 30px;
+    margin-bottom: 30px;
   }
 
   button {
@@ -343,7 +360,7 @@
     outline: none;
 
     &.btn-blackgray {
-      background-color: #242424;
+      background-color: #282828;
       margin-bottom: 15px;
       font-family: 'mazda_regular';
     }
@@ -352,6 +369,7 @@
   .buttons button.btn-red {
     background-color: #781326;
     font-family: 'mazda_regular';
+    cursor: pointer;
   }
 
   .item-radiobutton, .credit-calculate .item-checkbox {

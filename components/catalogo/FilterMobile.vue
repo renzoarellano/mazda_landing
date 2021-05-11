@@ -38,25 +38,32 @@
         <CustomSelect
           v-model="selectedPriceMobile"
           :options-value="optionsPricesMobile"
+          :absolute="false"
         />
         <RadioButtons
           v-model="selectedRadioButtonYearMobile"
           :title="titleRadioButtonsYearMobile"
           :label-name="labelRadioButtonsYearMobile"
-          :options="optionsRadioButtonsYearMobile"
-          :value="selectedRadioButtonYearMobile"
-          :default-value="selectedRadioButtonYearMobile"
+          :options="allYearsMobile"
+          :value="selectedYearMobile"
+          :default-value="selectedYearMobile"
           :display-mode="'row'"
         />
         <RadioButtons
           v-model="selectedRadioButtonTypeMobile"
           :title="titleRadioButtonsTypeMobile"
           :label-name="labelRadioButtonsTypeMobile"
-          :options="optionsRadioButtonsTypeMobile"
-          :default-value="selectedRadioButtonTypeMobile"
+          :options="allCategoriesMobile"
+          :default-value="selectedCategoryMobile"
           :value="selectedRadioButtonTypeMobile"
         />
-        <button class="buttonFilterAction" @click="applyFilter()">
+        <button
+          class="buttonFilterAction"
+          @click="
+            applyFilterMobile()
+            closeModal()
+          "
+        >
           AÑADIR FILTROS
         </button>
       </div>
@@ -66,7 +73,7 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex'
+import { mapGetters, mapActions } from 'vuex'
 import CustomSelect from '~/components/common/Select'
 import RadioButtons from '~/components/common/RadioButtons'
 export default {
@@ -106,14 +113,14 @@ export default {
       ],
       selectedRadioButtonYearMobile: this.$route.query.year || null,
       titleRadioButtonsYearMobile: 'AÑO',
-      labelRadioButtonsYearMobile: 'RadioButtonsYear',
+      labelRadioButtonsYearMobile: 'RadioButtonsYearMobile',
       optionsRadioButtonsYearMobile: {
         2021: 2021,
         2022: 2022,
       },
       selectedRadioButtonTypeMobile: this.$route.query.category || null,
       titleRadioButtonsTypeMobile: 'CATEGORÍA',
-      labelRadioButtonsTypeMobile: 'RadioButtonsType',
+      labelRadioButtonsTypeMobile: 'RadioButtonsTypeMobile',
       optionsRadioButtonsTypeMobile: {
         SUV: 'SUV',
         HATCHBACK: 'Hatchback',
@@ -121,11 +128,38 @@ export default {
       },
     }
   },
+  computed: {
+    ...mapGetters({
+      selectedYearMobile: 'cars/year',
+      allYearsMobile: 'cars/years',
+      selectedCategoryMobile: 'cars/category',
+      allCategoriesMobile: 'cars/categories',
+    }),
+  },
+  watch: {
+    selectedModelMobile(model) {
+      this.filterByCar(model)
+      this.selectedRadioButtonYearMobile = null
+      this.selectedRadioButtonTypeMobile = null
+      this.setYear(null)
+      this.setCategory(null)
+      this.applyFilterMobile()
+    },
+    selectedRadioButtonYearMobile(year) {
+      this.setYear(year)
+      this.applyFilterMobile()
+    },
+    selectedRadioButtonTypeMobile(category) {
+      this.setCategory(category)
+      this.applyFilterMobile()
+    },
+  },
   async mounted() {
     const { query } = await this.$route
     const { model, price, category, year } = query
-    if (model || price || category || year) {
-      await this.applyFilter()
+    console.log(window.innerWidth)
+    if ((model || price || category || year) && window.innerWidth < 768) {
+      await this.applyFilterMobile()
     }
   },
   methods: {
@@ -133,7 +167,8 @@ export default {
       if (price) return price
       return null
     },
-    applyFilter() {
+    applyFilterMobile() {
+      console.log('Apply filter MOBILE')
       this.$router.push({
         path: this.$route.path,
         query: {},
@@ -149,13 +184,26 @@ export default {
         path: this.$route.path,
         query: filterOptions,
       })
+      /* const str = Object.keys(filterOptions)
+        .map(function (key) {
+          if (filterOptions[key] != null) {
+            return key + '=' + filterOptions[key]
+          } else {
+            return key
+          }
+        })
+        .join('&')
+      history.pushState(null, 'Catalogo Mazda', '/catalogo' + '?' + str) */
+    },
+    closeModal() {
       this.showModal = false
+      document.body.style.overflow = 'initial'
     },
     updateModelsData(modelsMazda) {
       let newOptions = [
         {
           value: null,
-          text: 'MODELOS',
+          text: 'TODOS LOS MODELOS',
         },
       ]
       if (modelsMazda) {
@@ -179,6 +227,9 @@ export default {
     },
     ...mapActions({
       filtrar: 'cars/filterCars',
+      setYear: 'cars/settingYear',
+      setCategory: 'cars/settingCategory',
+      filterByCar: 'cars/filterByModel',
     }),
   },
 }
