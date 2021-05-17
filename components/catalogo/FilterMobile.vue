@@ -66,6 +66,9 @@
         >
           AÑADIR FILTROS
         </button>
+        <button class="cleanFilters" @click="cleanFilters()">
+          Quitar Filtros
+        </button>
       </div>
     </div>
     <button class="filtroButton" @click="toggleFiltros">FILTROS</button>
@@ -224,6 +227,14 @@ export default {
       } else {
         document.body.style.overflow = 'initial'
       }
+    },
+    cleanFilters() {
+      this.selectedModelMobile = null
+      this.selectedPriceMobile = null
+      this.selectedRadioButtonYearMobile = null
+      this.selectedRadioButtonTypeMobile = null
+      this.setCategory(null)
+      this.applyFilterMobile()
     },
     ...mapActions({
       filtrar: 'cars/filterCars',
