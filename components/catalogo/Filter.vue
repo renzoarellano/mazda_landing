@@ -31,6 +31,9 @@
       <button class="buttonFilterAction" @click="applyFilter()">
         AÑADIR FILTROS
       </button>
+      <button class="cleanFilters" @click="cleanFilters()">
+        Quitar Filtros
+      </button>
     </div>
   </div>
 </template>
@@ -185,6 +188,14 @@ export default {
         }
         window.scroll(0, window.pageYOffset - 50)
       }, 20)
+    },
+    cleanFilters() {
+      this.selectedModel = null
+      this.selectedPrice = null
+      this.selectedRadioButtonYear = null
+      this.selectedRadioButtonType = null
+      this.setCategory(null)
+      this.applyFilter()
     },
     ...mapActions({
       filtrar: 'cars/filterCars',
